@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.poker.yks.screens.ExtraScreen
-import com.poker.yks.screens.LoginScreen
-import com.poker.yks.screens.RegistrationScreen
-import com.poker.yks.screens.StartGameScreen
-import com.poker.yks.screens.StartScreen
+import com.poker.yks.navigation.Navigation
+import com.poker.yks.ui.screens.login.LoginScreen
+import com.poker.yks.ui.screens.registration.RegistrationScreen
+import com.poker.yks.ui.screens.startGame.StartGameScreen
+import com.poker.yks.ui.screens.welcome.WelcomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,13 +26,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp() {
     MaterialTheme {
-        val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = "start") {
-            composable("start") { StartScreen(navController) }
-            composable("login") { LoginScreen(navController) }
-            composable("registration") { RegistrationScreen(navController) }
-            composable("start_game") { StartGameScreen(navController) }
-            composable("extra") { ExtraScreen(navController) }
-        }
+        Navigation()
     }
 }

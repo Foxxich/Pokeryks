@@ -1,9 +1,9 @@
-package com.poker.yks.screens
+package com.poker.yks.ui.screens.main
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun ExtraScreen(navController: NavController) {
+fun MainScreen(navController: NavController){
 
 }

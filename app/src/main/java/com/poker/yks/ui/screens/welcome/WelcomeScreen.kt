@@ -1,4 +1,4 @@
-package com.poker.yks.screens
+package com.poker.yks.ui.screens.welcome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -14,10 +14,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.poker.yks.R
+import com.poker.yks.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartScreen(navController: NavController) {
+fun WelcomeScreen(navController: NavController) {
     Scaffold(
         content = { padding ->
             Column(
@@ -32,14 +33,20 @@ fun StartScreen(navController: NavController) {
                     contentDescription = null,
                 )
                 Button(modifier = Modifier.fillMaxWidth(),
-                    onClick = { navController.navigate("registration") }) {
+                    onClick = { navController.navigate(Screen.RegistrationScreen.route) }) {
                     Text("Go to Registration")
                 }
                 Button(modifier = Modifier.fillMaxWidth(),
-                    onClick = { navController.navigate("login") }) {
+                    onClick = { navController.navigate(Screen.LoginScreen.route) }) {
                     Text("Go to Login")
                 }
             }
         }
     )
 }
+
+//@Composable
+//@Preview
+//fun Dupnik(){
+//    StartScreen()
+//}

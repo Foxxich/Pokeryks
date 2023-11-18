@@ -1,5 +1,4 @@
-package com.poker.yks.screens
-
+package com.poker.yks.ui.screens.registration
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -24,9 +22,11 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
+fun RegistrationScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     var isFormValid by remember { mutableStateOf(true) }
 
     Scaffold(
@@ -54,6 +54,21 @@ fun LoginScreen(navController: NavController) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
+                    value = email,
+                    onValueChange = {
+                        email = it
+                        isFormValid = true
+                    },
+                    label = { Text("Email") },
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = !isFormValid && email.isBlank(),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = androidx.compose.ui.text.input.ImeAction.Next
+                    ),
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
                     value = password,
                     onValueChange = {
                         password = it
@@ -64,34 +79,40 @@ fun LoginScreen(navController: NavController) {
                     isError = !isFormValid && password.isBlank(),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = androidx.compose.ui.text.input.ImeAction.Done
+                        imeAction = androidx.compose.ui.text.input.ImeAction.Next
                     ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            if (username.isBlank() || password.isBlank()) {
-                                isFormValid = false
-                            } else {
-                                // Handle login logic here
-                                navController.navigate("nextScreen")
-                            }
-                        }
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = confirmPassword,
+                    onValueChange = {
+                        confirmPassword = it
+                        isFormValid = true
+                    },
+                    label = { Text("Confirm Password") },
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = !isFormValid && confirmPassword.isBlank(),
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = androidx.compose.ui.text.input.ImeAction.Done
                     ),
                     singleLine = true
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        if (username.isBlank() || password.isBlank()) {
+                        if (username.isBlank() || email.isBlank() || password.isBlank() || confirmPassword.isBlank() || password != confirmPassword) {
                             isFormValid = false
                         } else {
-                            // Handle login logic here
+                            // Handle registration logic here
                             navController.navigate("nextScreen")
                         }
                     },
-                    enabled = username.isNotBlank() && password.isNotBlank(),
+                    enabled = username.isNotBlank() && email.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank(),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Login")
+                    Text("Register")
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.poker.yks.screens
+package com.poker.yks.ui.screens.startGame
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
