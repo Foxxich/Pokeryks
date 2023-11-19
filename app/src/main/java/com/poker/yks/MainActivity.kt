@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.poker.yks.navigation.Navigation
 import com.poker.yks.ui.screens.login.LoginScreen
 import com.poker.yks.ui.screens.registration.RegistrationScreen
-import com.poker.yks.ui.screens.startGame.StartGameScreen
+
 import com.poker.yks.ui.screens.welcome.WelcomeScreen
 
 class MainActivity : ComponentActivity() {

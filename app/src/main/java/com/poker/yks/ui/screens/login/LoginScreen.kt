@@ -43,12 +43,21 @@ fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
     val loginViewModel: LoginViewModel = viewModel()
 
-    val state = loginViewModel.player.collectAsState()
-    when (state.value.status) {
-        1 -> {
+    val player = loginViewModel.player.collectAsState()
+    val status = loginViewModel.status.collectAsState()
+    when (status.value) {
+        //udane
+        in 200..299 -> {
             navController.navigate(Screen.MainScreen.route)
         }
+        //początek
+        0 -> {
+        }
         2 -> {
+            navController.navigate(Screen.MainScreen.route)
+        }
+        //nieudane
+        else -> {
             Toast.makeText(context, "Wrong Username or Password", Toast.LENGTH_SHORT).show()
         }
     }
@@ -68,7 +77,16 @@ fun LoginScreen(navController: NavController) {
                         isFormValid = true
                     },
                     label = { Text("Username") },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .let {
+                            if (status.value != 0) {
+                                it.background(color = Color.Red)
+                            } else {
+                                it
+                            }
+                        }
+                            ,
                     isError = !isFormValid && username.isBlank(),
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = androidx.compose.ui.text.input.ImeAction.Next
@@ -86,12 +104,13 @@ fun LoginScreen(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .let {
-                            if (state.value.status == 2) {
+                            if (status.value != 0) {
                                 it.background(color = Color.Red)
                             } else {
                                 it
                             }
-                        },
+                        }
+            ,
                     isError = !isFormValid && password.isBlank(),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -103,9 +122,9 @@ fun LoginScreen(navController: NavController) {
                                 isFormValid = false
                             } else {
                                 // Handle login logic here
-//                                navController.navigate("nextScreen")
-                                val loginCredential = LoginRequest(username, password)
-                                loginViewModel.loginToGame(loginCredential)
+//
+
+                                loginViewModel.loginToGame(username, password)
                             }
                         }
                     ),
@@ -118,8 +137,7 @@ fun LoginScreen(navController: NavController) {
                             isFormValid = false
                         } else {
                             // Handle login logic here
-                            val loginCredential = LoginRequest(username, password)
-                            loginViewModel.loginToGame(loginCredential)
+                            loginViewModel.loginToGame(username, password)
                         }
                     },
                     enabled = username.isNotBlank() && password.isNotBlank(),

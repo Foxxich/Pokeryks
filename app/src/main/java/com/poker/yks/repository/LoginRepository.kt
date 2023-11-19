@@ -9,7 +9,7 @@ class LoginRepository() {
 
     private val api = ApiClient.apiService
 
-    suspend fun postLoginCredentials(loginRequest: LoginRequest): Response<LoginResponse>{
+    suspend fun postLoginCredentials(loginRequest: LoginRequest): Response<LoginResponse> {
         return api.loginToGame(loginRequest)
     }
 
