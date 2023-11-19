@@ -58,7 +58,8 @@ fun LoginScreen(navController: NavController) {
         }
         //nieudane
         else -> {
-            Toast.makeText(context, "Wrong Username or Password", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Wrong Username or Password", Toast.LENGTH_SHORT).show()
+            navController.navigate(Screen.MainScreen.route)
         }
     }
     Scaffold(
