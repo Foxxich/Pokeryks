@@ -1,5 +1,6 @@
 package com.poker.yks.ui.screens.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.poker.yks.data.login.LoginRequest
@@ -39,6 +40,8 @@ class LoginViewModel : ViewModel() {
 //                else {
 //                    _status.update { remote.code() }
 //                }
+                _player.update { LoginResponse( "hello", 5, 10) }
+                Log.i("playerowikso loginvm", player.value.toString())
                 _status.update { randomLogin() }
             }
         }
