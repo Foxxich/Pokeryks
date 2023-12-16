@@ -68,124 +68,119 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
     chooseServerViewModel.getDummyServerList()
 //    chooseServerViewModel.getDummyServerList()
 
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
 
 
-            Image(
-                painter = painterResource(id = R.drawable.pokeryks),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.matchParentSize()
-            )
+        Image(
+            painter = painterResource(id = R.drawable.pokeryks),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.matchParentSize()
+        )
 
 
-            Column (verticalArrangement = Arrangement.SpaceAround, horizontalAlignment = Alignment.CenterHorizontally){
-                Column(
-                    modifier = Modifier
-                        .width(600.dp)
-                        .padding(top = 30.dp)
-                        .background(color = colorResource(id = R.color.light_tree)),
-                    verticalArrangement = Arrangement.Top,
+        Column(
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Column(
+                modifier = Modifier
+                    .width(600.dp)
+                    .padding(top = 30.dp)
+                    .background(color = colorResource(id = R.color.light_tree)),
+                verticalArrangement = Arrangement.Top,
 //            horizontalAlignment = Alignment.End,
 
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White),
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.White),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        Text(text = "Name", color = Color.Red, fontSize = 24.sp)
-                        Text(text = "Occupancy", color = Color.Red, fontSize = 24.sp)
-                    }
+                    Text(text = "Name", color = Color.Red, fontSize = 24.sp)
+                    Text(text = "Occupancy", color = Color.Red, fontSize = 24.sp)
+                }
 
-                    LazyColumn(
-                        modifier = Modifier
+                LazyColumn(
+                    modifier = Modifier
 //                        .fillMaxSize()
 //                        .weight(1f)
-                            .fillMaxWidth()
+                        .fillMaxWidth()
 //                            .padding(32.dp),
 //                    verticalArrangement = Arrangement.Center,
 //                    horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Log.i("listownia", dummyServerList.value.toString())
-                        itemsIndexed(items = dummyServerList.value) { index, server ->
-                            Row(
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .border(width = 2.dp, color = Color.Black)
-                                    .fillMaxWidth()
-                                    .height(40.dp)
-                                    .clickable {
-                                        chooseServerViewModel.getDummyServerList()
-                                        chooseServerViewModel.chooseServer(
-                                            server,
-                                            sharedViewModel.getPlayerInfo(),
-                                            context
-                                        )
-                                    }
-                                    .let {
-                                        if (server.occupation == 0) {
-                                            it.background(Color.Gray)
-                                        } else {
-                                            it.background(Color.Red)
-                                        }
-                                    },
-                                horizontalArrangement = Arrangement.SpaceAround,
-                                verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Log.i("listownia", dummyServerList.value.toString())
+                    itemsIndexed(items = dummyServerList.value) { index, server ->
+                        Row(modifier = Modifier
+                            .padding(5.dp)
+                            .border(width = 2.dp, color = Color.Black)
+                            .fillMaxWidth()
+                            .height(40.dp)
+                            .clickable {
+                                chooseServerViewModel.getDummyServerList()
+                                chooseServerViewModel.chooseServer(
+                                    server, sharedViewModel.getPlayerInfo(), context
+                                )
+                            }.let {
+                                if (server.occupation == 0) {
+                                    it.background(Color.Gray)
+                                } else {
+                                    it.background(Color.Red)
+                                }
+                            },
+                            horizontalArrangement = Arrangement.SpaceAround,
+                            verticalAlignment = Alignment.CenterVertically
 
+                        )
+
+                        {
+                            Log.i("listownia", server.toString())
+                            Text(
+                                text = "IP ${server.ip}",
+                                fontSize = 24.sp,
+//                                modifier = Modifier.weight(1f)
                             )
-
-                            {
-                                Log.i("listownia", server.toString())
-                                Text(
-                                    text = "IP ${server.ip}",
-                                    fontSize = 24.sp,
+                            Text(
+                                text = "Occupancy ${server.occupation}",
+                                fontSize = 24.sp,
 //                                modifier = Modifier.weight(1f)
-                                )
-                                Text(
-                                    text = "Occupancy ${server.occupation}",
-                                    fontSize = 24.sp,
-//                                modifier = Modifier.weight(1f)
-                                )
-                            }
-
+                            )
                         }
-                    }
 
+                    }
+                }
+
+
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    onClick = {
+                        chooseServerViewModel.getDummyServerList()
+                    }, modifier = Modifier.width(300.dp)
+                ) {
+                    Text(text = "odśwież liste")
 
                 }
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Button(
-                        onClick = {
-                            chooseServerViewModel.getDummyServerList()
-                        },
-                        modifier = Modifier.width(300.dp)
-                    ) {
-                        Text(text = "odśwież liste")
+                Button(
+                    onClick = { navController.navigate(Screen.MainScreen.route) },
+                    modifier = Modifier.width(300.dp)
+                ) {
+                    Text(text = "cofnij do menu")
 
-                    }
-                    Button(onClick = { navController.navigate(Screen.MainScreen.route) },
-                        modifier = Modifier.width(300.dp)
-                    ) {
-                        Text(text = "cofnij do menu")
-
-                    }
                 }
             }
-
-
-
-
-
         }
 
 
-        }
+    }
 
 
-
-
+}
 
 
 @Composable

@@ -62,6 +62,7 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
         //początek
         0 -> {
         }
+
         2 -> {
             Log.i("playerowisko loginscreen", player.value.toString())
             sharedViewModel.setPlayerInfo(player.value)
@@ -100,7 +101,7 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                     username = it
                     isFormValid = true
                 },
-                label = { Text("Username",color = Color.Black) },
+                label = { Text("Username", color = Color.Black) },
                 modifier = Modifier
                     .width(300.dp)
 //                    .border(2.dp, Color.Black)
@@ -109,10 +110,12 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                             val background = it.background(color = Color.Green)
                             background
                         } else {
-                            it.background(color = colorResource(id = R.color.light_grass),shape = RoundedCornerShape(16.dp))
+                            it.background(
+                                color = colorResource(id = R.color.light_grass),
+                                shape = RoundedCornerShape(16.dp)
+                            )
                         }
-                    }
-                ,
+                    },
                 isError = !isFormValid && username.isBlank(),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = androidx.compose.ui.text.input.ImeAction.Next
@@ -131,18 +134,19 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                     isFormValid = true
                 },
 
-                label = { Text("Password",color = Color.Black) },
+                label = { Text("Password", color = Color.Black) },
                 modifier = Modifier
                     .width(300.dp)
                     .let {
                         if (status.value != 0) {
-                            it.background(color = Color.Green, shape = RoundedCornerShape(16.dp),)
+                            it.background(color = Color.Green, shape = RoundedCornerShape(16.dp))
                         } else {
-                            it.background(color = colorResource(id = R.color.light_grass),shape = RoundedCornerShape(16.dp))
+                            it.background(
+                                color = colorResource(id = R.color.light_grass),
+                                shape = RoundedCornerShape(16.dp)
+                            )
                         }
-                    }
-
-                ,
+                    },
 
                 isError = !isFormValid && password.isBlank(),
                 visualTransformation = PasswordVisualTransformation(),
@@ -179,17 +183,17 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                 },
                 enabled = username.isNotBlank() && password.isNotBlank(),
                 modifier = Modifier.width(300.dp),
-                        colors = ButtonDefaults.buttonColors(
+                colors = ButtonDefaults.buttonColors(
 
-                        colorResource(id = R.color.light_grass)
-                        ),
+                    colorResource(id = R.color.light_grass)
+                ),
             ) {
-                Text("Login",color=Color.Black)
+                Text("Login", color = Color.Black)
             }
         }
     }
 
-    }
+}
 
 
 

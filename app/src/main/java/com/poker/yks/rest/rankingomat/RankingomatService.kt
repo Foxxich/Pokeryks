@@ -1,5 +1,6 @@
 package com.poker.yks.rest.rankingomat
 
+import com.poker.yks.data.LeaderboardUser
 import com.poker.yks.data.User
 import com.poker.yks.data.login.LoginRequest
 import com.poker.yks.data.login.LoginResponse
@@ -12,8 +13,8 @@ import retrofit2.http.POST
 
 interface RankingomatService {
 
-    @GET("users")
-    fun getUsers(): Response<List<User>>
+    @GET("ranks/")
+    suspend fun getUsers(): Response<List<LeaderboardUser>>
 
     @POST("login")
     suspend fun loginToGame(@Body request: LoginRequest) : Response<LoginResponse>
