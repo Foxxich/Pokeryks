@@ -1,6 +1,5 @@
 package com.poker.yks.rest.rankingomat
 
-import com.poker.yks.rest.serverManager.ServerManagerService
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -14,6 +13,6 @@ object RankingomatClient {
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
 
-    val rankingomatService= retrofit.create(RankingomatService::class.java)
+    val rankingomatService: RankingomatService = retrofit.create(RankingomatService::class.java)
 
 }

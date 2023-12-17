@@ -10,15 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.poker.yks.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,6 +32,11 @@ fun RegistrationScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var isFormValid by remember { mutableStateOf(true) }
+
+    val context = LocalContext.current
+    val registrationViewModel: RegistrationViewModel = viewModel()
+
+    val status = registrationViewModel.status.collectAsState()
 
     Scaffold(
         content = { padding ->
@@ -106,7 +115,12 @@ fun RegistrationScreen(navController: NavController) {
                             isFormValid = false
                         } else {
                             // Handle registration logic here
-                            navController.navigate("nextScreen")
+                            registrationViewModel.createAccount(
+                                userName = username,
+                                email = email,
+                                password = password
+                            )
+                            navController.navigate(Screen.MainScreen.route)
                         }
                     },
                     enabled = username.isNotBlank() && email.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank(),

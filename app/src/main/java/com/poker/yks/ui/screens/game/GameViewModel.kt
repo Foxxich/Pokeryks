@@ -8,10 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -23,24 +20,28 @@ class GameViewModel @Inject constructor(
     private val stockApi: StockApi,
 ) : ViewModel() {
     sealed class SocketEvent {
-    data class ScriptEvent(val data: String) : SocketEvent()
-}
+        data class ScriptEvent(val data: String) : SocketEvent()
+    }
+
     private val _socketEvent = MutableSharedFlow<SocketEvent>()
     val socketEvent = _socketEvent.asSharedFlow()
     private val connectionEventChannel = Channel<WebSocket.Event>()
     val connectionEvent = connectionEventChannel.receiveAsFlow().flowOn(Dispatchers.IO)
-    init{
+
+    init {
         observeEvents()
         fetchSocketResponse()
     }
+
     fun observeEvents() {
         viewModelScope.launch(Dispatchers.IO) {
             stockApi.observeEvents().collect { event ->
                 connectionEventChannel.send(event)
-                Timber.e("event message ${event.toString()}")
+                Timber.e("event message $event")
             }
         }
     }
+
     fun fetchSocketResponse() {
         viewModelScope.launch(Dispatchers.IO) {
             stockApi.observeScriptInfo().collect { data ->
@@ -48,6 +49,7 @@ class GameViewModel @Inject constructor(
             }
         }
     }
+
     fun sendBaseModel(data: String) {
         viewModelScope.launch(Dispatchers.IO) {
             stockApi.sendBroadCast(data)

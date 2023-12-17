@@ -26,50 +26,49 @@ import com.poker.yks.navigation.Screen
 @Composable
 fun WelcomeScreen(navController: NavController) {
 
-            Box(modifier = Modifier.fillMaxSize())
-            {
-                Image(
-                    painter = painterResource(id = R.drawable.pokeryks),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.matchParentSize()
-                )
-                Box(){
+    Box(modifier = Modifier.fillMaxSize())
+    {
+        Image(
+            painter = painterResource(id = R.drawable.pokeryks),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.matchParentSize()
+        )
+        Box {
 
-                }
-                Column (
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 160.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ){
-                    Button(
-                        modifier = Modifier
-                            .width(180.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            colorResource(id = R.color.light_grass)
-                        ),
-                        onClick = { navController.navigate(Screen.LoginScreen.route) }
-                    ) {
-                        Text("Go to Login",color = Color.Black)
-                    }
-                    Spacer(modifier = Modifier.padding(5.dp))
-                    Button(
-                        modifier = Modifier
-                            .width(180.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                colorResource(id = R.color.light_grass)
-                            ),
-                        onClick = { navController.navigate(Screen.RegistrationScreen.route) }) {
-                        Text("Go to Registration",color = Color.Black)
-                    }
-
-                }
-
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 160.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Button(
+                modifier = Modifier
+                    .width(180.dp),
+                colors = ButtonDefaults.buttonColors(
+                    colorResource(id = R.color.light_grass)
+                ),
+                onClick = { navController.navigate(Screen.LoginScreen.route) }
+            ) {
+                Text("Go to Login", color = Color.Black)
             }
+            Spacer(modifier = Modifier.padding(5.dp))
+            Button(
+                modifier = Modifier
+                    .width(180.dp),
+                colors = ButtonDefaults.buttonColors(
+                    colorResource(id = R.color.light_grass)
+                ),
+                onClick = { navController.navigate(Screen.RegistrationScreen.route) }) {
+                Text("Go to Registration", color = Color.Black)
+            }
+
         }
 
+    }
+}
 
 
 //@Composable

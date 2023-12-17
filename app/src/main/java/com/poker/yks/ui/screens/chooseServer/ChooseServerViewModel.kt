@@ -1,15 +1,13 @@
 package com.poker.yks.ui.screens.chooseServer
 
+//import com.poker.yks.repository.RoomRepository
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.poker.yks.data.login.LoginResponse
 import com.poker.yks.data.serverStatus.ServerStatus
-//import com.poker.yks.repository.RoomRepository
 import com.poker.yks.repository.ServerStatusRepository
-import com.poker.yks.rest.room.RoomClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -49,11 +47,11 @@ class ChooseServerViewModel : ViewModel() {
         }
     }
 
-    fun chooseServer(server: ServerStatus,loginResponse: LoginResponse,context:Context){
+    fun chooseServer(server: ServerStatus, loginResponse: LoginResponse, context: Context) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                if (server.occupation>3){
-                    Toast.makeText(context,"Server is full!",Toast.LENGTH_SHORT).show()
+            withContext(Dispatchers.IO) {
+                if (server.occupation > 3) {
+                    Toast.makeText(context, "Server is full!", Toast.LENGTH_SHORT).show()
                     return@withContext
                 }
 //                roomRepository.joinServer(server.ip, loginResponse)
@@ -63,16 +61,16 @@ class ChooseServerViewModel : ViewModel() {
         }
     }
 
-    fun getDummyServerList(){
+    fun getDummyServerList() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 val list = mutableListOf<ServerStatus>()
                 val random = Random(System.currentTimeMillis())
                 list.apply {
-                    add(ServerStatus("1.1.1.1",3))
-                    add(ServerStatus("1.1.1.2",random.nextInt()%8))
-                    add(ServerStatus("1.1.1.3",3))
-                    add(ServerStatus("1.1.1.4",0))
+                    add(ServerStatus("1.1.1.1", 3))
+                    add(ServerStatus("1.1.1.2", random.nextInt() % 8))
+                    add(ServerStatus("1.1.1.3", 3))
+                    add(ServerStatus("1.1.1.4", 0))
                 }
                 _dummyServerList.update { list }
             }

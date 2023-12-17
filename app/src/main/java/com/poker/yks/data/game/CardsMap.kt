@@ -3,8 +3,8 @@ package com.poker.yks.data.game
 import com.poker.yks.R
 
 
-fun getCardsMap():HashMap<String,Int>{
-    val map = HashMap<String,Int>()
+fun getCardsMap(): HashMap<String, Int> {
+    val map = HashMap<String, Int>()
     map["clubs_10"] = R.drawable.clubs_10
     map["diamonds_6"] = R.drawable.diamonds_6
     map["hearts_king"] = R.drawable.hearts_king

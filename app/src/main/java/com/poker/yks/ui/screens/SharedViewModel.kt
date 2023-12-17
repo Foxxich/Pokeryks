@@ -12,7 +12,8 @@ class SharedViewModel : ViewModel() {
     fun getPlayerInfo(): LoginResponse {
         return LoginResponse(nick, money, vip)
     }
-    fun setPlayerInfo(loginResponse: LoginResponse){
+
+    fun setPlayerInfo(loginResponse: LoginResponse) {
         nick = loginResponse.nick
         money = loginResponse.money
         vip = loginResponse.vip

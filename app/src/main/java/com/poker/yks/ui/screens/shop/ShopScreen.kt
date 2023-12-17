@@ -17,7 +17,7 @@ import com.poker.yks.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShopScreen(navController: NavController){
+fun ShopScreen(navController: NavController) {
     Scaffold(
         content = { padding ->
             Column(

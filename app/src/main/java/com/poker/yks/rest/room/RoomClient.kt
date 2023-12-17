@@ -7,8 +7,6 @@ import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.retry.LinearBackoffStrategy
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
-import dagger.Provides
-import dagger.hilt.android.scopes.ActivityRetainedScoped
 import okhttp3.OkHttpClient
 
 object RoomClient {
