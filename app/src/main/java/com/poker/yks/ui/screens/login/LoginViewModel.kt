@@ -1,9 +1,7 @@
 package com.poker.yks.ui.screens.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.poker.yks.data.login.LoginRequest
 import com.poker.yks.data.login.LoginResponse
 import com.poker.yks.repository.LoginRepository
 import kotlinx.coroutines.Dispatchers

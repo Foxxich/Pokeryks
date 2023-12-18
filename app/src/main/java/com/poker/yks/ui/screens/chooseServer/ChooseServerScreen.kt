@@ -119,7 +119,8 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                                 chooseServerViewModel.chooseServer(
                                     server, sharedViewModel.getPlayerInfo(), context
                                 )
-                            }.let {
+                            }
+                            .let {
                                 if (server.occupation == 0) {
                                     it.background(Color.Gray)
                                 } else {

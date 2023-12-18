@@ -1,10 +1,8 @@
 package com.poker.yks.ui.screens.registration
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.poker.yks.data.registration.RegistrationRequest
-import com.poker.yks.data.registration.RegistrationResponse
 import com.poker.yks.repository.RegistrationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,13 +21,15 @@ class RegistrationViewModel : ViewModel() {
     fun createAccount(password: String, userName: String, email: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val reg = repository.postRegistrationCredentials(RegistrationRequest(
-                    login = userName,
-                    password = password,
-                    nick = userName,
-                    email = email,
-                    endpoint = ""
-                ))
+                val reg = repository.postRegistrationCredentials(
+                    RegistrationRequest(
+                        login = userName,
+                        password = password,
+                        nick = userName,
+                        email = email,
+                        endpoint = ""
+                    )
+                )
                 Timber.tag("REGISTRATION_TAG").i(reg.toString())
                 Timber.tag("REGISTRATION_TAG").i(reg.isSuccessful.toString())
                 _status.update { 1 }

@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.poker.yks.ui.screens.SharedViewModel
 import com.poker.yks.ui.screens.chooseServer.ChooseServerScreen
 import com.poker.yks.ui.screens.game.GameScreen
-import com.poker.yks.ui.screens.leaderboard.LeadeboardScreen
+import com.poker.yks.ui.screens.leaderboard.LeaderboardScreen
 import com.poker.yks.ui.screens.login.LoginScreen
 import com.poker.yks.ui.screens.main.MainScreen
 import com.poker.yks.ui.screens.registration.RegistrationScreen
@@ -42,7 +42,7 @@ fun Navigation() {
             MainScreen(navController = navController)
         }
         composable(route = Screen.LeaderboardScreen.route) {
-            LeadeboardScreen(navController = navController)
+            LeaderboardScreen(navController = navController)
         }
     }
 
