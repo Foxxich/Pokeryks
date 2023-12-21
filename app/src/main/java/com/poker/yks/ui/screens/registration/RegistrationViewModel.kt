@@ -10,29 +10,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 
 class RegistrationViewModel : ViewModel() {
     private val repository = RegistrationRepository()
 
-    private val _status = MutableStateFlow(0)
+    private val _status = MutableStateFlow(false)
     val status = _status.asStateFlow()
 
     fun createAccount(password: String, userName: String, email: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val reg = repository.postRegistrationCredentials(
+                _status.update { repository.postRegistrationCredentials(
                     RegistrationRequest(
                         login = userName,
                         password = password,
-                        nick = userName,
+                        userName = userName,
                         email = email,
                         endpoint = ""
                     )
-                )
-                Timber.tag("REGISTRATION_TAG").i(reg.toString())
-                Timber.tag("REGISTRATION_TAG").i(reg.isSuccessful.toString())
-                _status.update { 1 }
+                ).isSuccessful }
             }
         }
     }

@@ -15,10 +15,10 @@ interface RankingomatService {
     @GET("ranks/")
     suspend fun getUsers(): Response<List<LeaderboardUser>>
 
-    @POST("login")
+    @POST("login/")
     suspend fun loginToGame(@Body request: LoginRequest): Response<LoginResponse>
 
-    @POST("register")
+    @POST("register/")
     suspend fun registerNewAccount(@Body request: RegistrationRequest): Response<RegistrationResponse>
 
 }
