@@ -9,8 +9,8 @@ data class RegistrationRequest(
     val login: String,
     @Json(name = "password")
     val password: String,
-    @Json(name = "nick")
-    val nick: String,
+    @Json(name = "username")
+    val userName: String,
     @Json(name = "email")
     val email: String,
     @Json(name = "endpoint")
