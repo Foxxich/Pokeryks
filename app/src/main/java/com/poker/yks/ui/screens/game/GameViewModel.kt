@@ -8,7 +8,7 @@ class GameViewModel : ViewModel() {
     private lateinit var webSocketClient : WebSocketClient
     private val socketListener = object : WebSocketClient.SocketListener {
         override fun onMessage(message: String) {
-            Log.e("socketCheck onMessage", message)
+            Log.e("socketCheck 11 onMessage", message)
         }
 
     }

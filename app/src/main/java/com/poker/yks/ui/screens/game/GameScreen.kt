@@ -42,7 +42,9 @@ fun GameScreen(
     sharedViewModel: SharedViewModel
 ) {
     val gameViewModel: GameViewModel = viewModel()
-    gameViewModel.createWebSocketConnection("http://192.168.0.103:8002")
+    gameViewModel.createWebSocketConnection("ws://192.168.0.104:8000/ws/socket-server")
+//    gameViewModel.createWebSocketConnection("wss://ws.postman-echo.com/raw")
+//    gameViewModel.createWebSocketConnection("wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self")
     Box(modifier = Modifier.fillMaxSize()) {
 
         Image(
@@ -170,7 +172,10 @@ fun GameScreen(
                         Text(text = "Call 50")
                     }
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+
+                            gameViewModel.sendMessage(
+                            """{"message":"hejka"}""") },
                         modifier = Modifier.padding(16.dp), // Dark wood color for the table
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D4C41))
