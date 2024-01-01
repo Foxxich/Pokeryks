@@ -16,6 +16,7 @@ class WebSocketClient {
 
     companion object {
         private lateinit var instance: WebSocketClient
+
         @JvmStatic
         @Synchronized
         //This function gives singleton instance of WebSocket.

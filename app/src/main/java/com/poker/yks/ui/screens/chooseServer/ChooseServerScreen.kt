@@ -55,12 +55,12 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
 
     val server = chooseServerViewModel.server.collectAsState()
     val dummyServer = chooseServerViewModel.dummyServer.collectAsState()
-    when (dummyServer.value) {
-        "" -> {}
-        else -> {
-            navController.navigate(Screen.GameScreen.route)
-        }
-    }
+//    when (dummyServer.value) {
+//        "" -> {}
+//        else -> {
+//            navController.navigate(Screen.GameScreen.route)
+//        }
+//    }
     chooseServerViewModel.getDummyServerList()
 //    chooseServerViewModel.getDummyServerList()
 
@@ -115,12 +115,11 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                             .fillMaxWidth()
                             .height(40.dp)
                             .clickable {
-                                chooseServerViewModel.getDummyServerList()
-                                sharedViewModel.getPlayerInfo()?.let {
-                                    chooseServerViewModel.chooseServer(
-                                        server, it, context
-                                    )
-                                }
+//                                chooseServerViewModel.getDummyServerList()
+                                chooseServerViewModel.chooseServer(
+                                    server, sharedViewModel.getPlayerInfo(), context
+                                )
+                                navController.navigate(Screen.GameScreen.route)
                             }
                             .let {
                                 if (server.occupation == 0) {
