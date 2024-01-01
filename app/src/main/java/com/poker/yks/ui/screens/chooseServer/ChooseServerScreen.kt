@@ -116,9 +116,11 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                             .height(40.dp)
                             .clickable {
                                 chooseServerViewModel.getDummyServerList()
-                                chooseServerViewModel.chooseServer(
-                                    server, sharedViewModel.getPlayerInfo(), context
-                                )
+                                sharedViewModel.getPlayerInfo()?.let {
+                                    chooseServerViewModel.chooseServer(
+                                        server, it, context
+                                    )
+                                }
                             }
                             .let {
                                 if (server.occupation == 0) {

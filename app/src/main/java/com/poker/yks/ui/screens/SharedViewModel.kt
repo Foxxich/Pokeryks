@@ -9,14 +9,15 @@ class SharedViewModel : ViewModel() {
     private var vip: Int = 0
 
 
-    fun getPlayerInfo(): LoginResponse {
-        return LoginResponse(nick, money, vip)
+    fun getPlayerInfo(): LoginResponse? {
+//        return LoginResponse(nick, money, vip)
+        return null
     }
 
     fun setPlayerInfo(loginResponse: LoginResponse) {
-        nick = loginResponse.nick
-        money = loginResponse.money
-        vip = loginResponse.vip
+//        nick = loginResponse.nick
+//        money = loginResponse.money
+//        vip = loginResponse.vip
     }
 
     override fun onCleared() {

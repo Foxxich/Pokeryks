@@ -1,7 +1,9 @@
 package com.poker.yks.ui.screens.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.poker.yks.data.login.LoginRequest
 import com.poker.yks.data.login.LoginResponse
 import com.poker.yks.repository.LoginRepository
 import kotlinx.coroutines.Dispatchers
@@ -14,18 +16,23 @@ import kotlinx.coroutines.withContext
 class LoginViewModel : ViewModel() {
     private val repository = LoginRepository()
 
-    private val _player = MutableStateFlow<LoginResponse>(LoginResponse("", 0, 0))
-    val player = _player.asStateFlow()
+//    private val _player = MutableStateFlow(LoginResponse("", 0, 0))
+//    val player = _player.asStateFlow()
 
-    private val _status = MutableStateFlow(0)
+    private val _status = MutableStateFlow(false)
     val status = _status.asStateFlow()
 
-    private var endpoint = ""
-    fun loginToGame(login: String, password: String) {
+    fun loginToGame(email: String, password: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _player.update { LoginResponse("hello", 5, 10) }
-                _status.update { 1 }
+                val loginPost = repository.postLoginCredentials(
+                    LoginRequest(
+                        email = email,
+                        password = password,
+                        endpoint = ""
+                    )
+                )
+                _status.update { loginPost.isSuccessful }
             }
         }
     }

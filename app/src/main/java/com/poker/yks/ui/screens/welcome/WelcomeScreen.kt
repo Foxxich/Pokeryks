@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,10 +24,8 @@ import androidx.navigation.NavController
 import com.poker.yks.R
 import com.poker.yks.navigation.Screen
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WelcomeScreen(navController: NavController) {
-
     Box(modifier = Modifier.fillMaxSize())
     {
         Image(
@@ -72,10 +69,3 @@ fun WelcomeScreen(navController: NavController) {
 
     }
 }
-
-
-//@Composable
-//@Preview
-//fun Dupnik(){
-//    StartScreen()
-//}
