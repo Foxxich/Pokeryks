@@ -32,7 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.JsonObject
 import com.poker.yks.R
+import com.poker.yks.data.game.Move
+import com.poker.yks.data.game.MoveDTO
 import com.poker.yks.ui.screens.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +45,8 @@ fun GameScreen(
     sharedViewModel: SharedViewModel
 ) {
     val gameViewModel: GameViewModel = viewModel()
-    gameViewModel.createWebSocketConnection("ws://192.168.0.104:8000/ws/socket-server")
+//    gameViewModel.createWebSocketConnection("ws://10.0.2.2:8000/ws/socket-server")
+    gameViewModel.createWebSocketConnection("ws://192.168.0.107:8000/ws/socket-server")
 //    gameViewModel.createWebSocketConnection("wss://ws.postman-echo.com/raw")
 //    gameViewModel.createWebSocketConnection("wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self")
     Box(modifier = Modifier.fillMaxSize()) {
@@ -80,13 +84,55 @@ fun GameScreen(
                     .weight(3f, true),
                 contentAlignment = Alignment.Center
             ) {
+
                 Box(
                     modifier = Modifier
                         .width(500.dp)
                         .height(200.dp)
                         .padding(16.dp)
                         .background(Color(0xFF163020)),
-                )
+                    contentAlignment = Alignment.Center
+                ){
+                    Row (
+                        modifier = Modifier
+                            .width(300.dp)
+                            .height(200.dp)
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+
+//                        .background(Color(0xFF163020))
+                    ){
+                        Image(
+                            painter = painterResource(R.drawable.backcard),
+                            contentDescription = null,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        Image(
+                            painter = painterResource(R.drawable.backcard),
+                            contentDescription = null,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        Image(
+                            painter = painterResource(R.drawable.backcard),
+                            contentDescription = null,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        Image(
+                            painter = painterResource(R.drawable.backcard),
+                            contentDescription = null,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        Image(
+                            painter = painterResource(R.drawable.backcard),
+                            contentDescription = null,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
 
                 // Outer Boxes
                 Box(
@@ -160,7 +206,7 @@ fun GameScreen(
                         modifier = Modifier.padding(16.dp), // Dark wood color for the table
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D4C41))
-                        ) {
+                    ) {
                         Text(text = "Fold")
                     }
                     Button(
@@ -173,9 +219,17 @@ fun GameScreen(
                     }
                     Button(
                         onClick = {
+                            val move = MoveDTO(
+                                moveType = "call",
+                                amount = 50,
+                                nick = "masterchlop"
+                            )
 
                             gameViewModel.sendMessage(
-                            """{"message":"hejka"}""") },
+                                move
+//                                """{"message":"hejka"}"""
+                            )
+                        },
                         modifier = Modifier.padding(16.dp), // Dark wood color for the table
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D4C41))

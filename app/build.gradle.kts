@@ -97,12 +97,7 @@ dependencies {
 
 
 
-    val scarletVersion = "0.1.12"
-    implementation ("com.tinder.scarlet:scarlet:$scarletVersion")
-    implementation ("com.tinder.scarlet:websocket-okhttp:$scarletVersion")
-    implementation ("com.tinder.scarlet:lifecycle-android:$scarletVersion")
-    implementation ("com.tinder.scarlet:message-adapter-gson:$scarletVersion")
-    implementation ("com.tinder.scarlet:stream-adapter-coroutines:$scarletVersion")
+
 
     implementation ("com.google.dagger:hilt-android:2.45")
     kapt ("com.google.dagger:hilt-android-compiler:2.45")

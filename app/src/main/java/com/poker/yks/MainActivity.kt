@@ -11,11 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import com.poker.yks.navigation.Navigation
+import timber.log.Timber
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+
+            Timber.plant(Timber.DebugTree())
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
