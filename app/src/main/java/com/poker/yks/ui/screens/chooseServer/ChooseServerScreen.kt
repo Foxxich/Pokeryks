@@ -46,8 +46,6 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
     val chooseServerViewModel: ChooseServerViewModel = viewModel()
 
     val context = LocalContext.current
-    Log.i("playerowisko", sharedViewModel.toString())
-    Log.i("playerowisko", sharedViewModel.getPlayerInfo().toString())
 
 
     val serverList = chooseServerViewModel.serverStatus.collectAsState()
@@ -107,7 +105,6 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
 //                    verticalArrangement = Arrangement.Center,
 //                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Log.i("listownia", dummyServerList.value.toString())
                     itemsIndexed(items = dummyServerList.value) { index, server ->
                         Row(modifier = Modifier
                             .padding(5.dp)
@@ -115,7 +112,6 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                             .fillMaxWidth()
                             .height(40.dp)
                             .clickable {
-//                                chooseServerViewModel.getDummyServerList()
                                 chooseServerViewModel.chooseServer(
                                     server, sharedViewModel.getPlayerInfo(), context
                                 )

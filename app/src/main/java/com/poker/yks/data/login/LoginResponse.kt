@@ -10,5 +10,5 @@ data class LoginResponse(
     @Json(name = "money")
     val money: Int,
     @Json(name = "vip")
-    val vip: Int,
+    var vip: Int,
 )

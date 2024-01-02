@@ -27,7 +27,7 @@ fun Navigation() {
             GameScreen(navController = navController, sharedViewModel)
         }
         composable(route = Screen.ShopScreen.route) {
-            ShopScreen(navController = navController)
+            ShopScreen(navController = navController, sharedViewModel)
         }
         composable(route = Screen.LoginScreen.route) { entry ->
             LoginScreen(navController = navController, sharedViewModel)
