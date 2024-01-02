@@ -1,6 +1,7 @@
 package com.poker.yks.ui.screens.login
 
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.poker.yks.R
+import com.poker.yks.data.Status
+import com.poker.yks.navigation.Screen
 import com.poker.yks.ui.screens.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,9 +54,24 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
 
     val context = LocalContext.current
     val loginViewModel: LoginViewModel = viewModel()
+    val loginStatus by loginViewModel.status.collectAsState()
 
-//    val player = loginViewModel.player.collectAsState()
-    val status = loginViewModel.status.collectAsState()
+    LaunchedEffect(loginStatus) {
+        when (loginStatus) {
+            Status.SUCCESS -> {
+                sharedViewModel.setPlayerInfo(loginViewModel.player.value)
+                navController.navigate(Screen.MainScreen.route)
+            }
+            Status.FAIL -> {
+                if (email.isNotBlank() && password.isNotBlank()) {
+                    Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else -> {
+
+            }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -77,9 +96,8 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                 label = { Text("Email", color = Color.Black) },
                 modifier = Modifier
                     .width(300.dp)
-//                    .border(2.dp, Color.Black)
                     .let {
-                        if (status.value) {
+                        if (loginStatus == Status.SUCCESS) {
                             val background = it.background(color = Color.Green)
                             background
                         } else {
@@ -111,7 +129,7 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                 modifier = Modifier
                     .width(300.dp)
                     .let {
-                        if (status.value) {
+                        if (loginStatus == Status.SUCCESS) {
                             it.background(color = Color.Green, shape = RoundedCornerShape(16.dp))
                         } else {
                             it.background(
@@ -135,10 +153,7 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                         if (email.isBlank() || password.isBlank()) {
                             isFormValid = false
                         } else {
-                            // Handle login logic here
-//
                             loginViewModel.loginToGame(email, password)
-//                            sharedViewModel.setPlayerInfo(player.value)
                         }
                     }
                 ),
@@ -150,15 +165,12 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                     if (email.isBlank() || password.isBlank()) {
                         isFormValid = false
                     } else {
-                        // Handle login logic here
                         loginViewModel.loginToGame(email, password)
-//                        sharedViewModel.setPlayerInfo(player.value)
                     }
                 },
                 enabled = email.isNotBlank() && password.isNotBlank(),
                 modifier = Modifier.width(300.dp),
                 colors = ButtonDefaults.buttonColors(
-
                     colorResource(id = R.color.light_grass)
                 ),
             ) {

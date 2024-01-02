@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,18 +20,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.poker.yks.R
 import com.poker.yks.navigation.Screen
+import com.poker.yks.ui.screens.SharedViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
 
 
@@ -45,9 +41,6 @@ fun MainScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
-//                    .padding(16.dp),
-//                verticalArrangement = Arrangement.Center,
-//                horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -60,7 +53,7 @@ fun MainScreen(navController: NavController) {
                         .padding(8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "20 000", fontSize = 20.sp)
+                    Text(text = sharedViewModel.getPlayerInfo().money.toString(), fontSize = 20.sp)
                 }
                 Box(
                     modifier = Modifier
@@ -69,7 +62,10 @@ fun MainScreen(navController: NavController) {
                         .padding(8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Vip Not Active", color = Color.Red, fontSize = 20.sp)
+                    if (sharedViewModel.getPlayerInfo().vip == 1)
+                        Text(text = "Vip Is Active", color = Color.Red, fontSize = 20.sp)
+                    else
+                        Text(text = "Vip Not Active", color = Color.Red, fontSize = 20.sp)
                 }
             }
             Box(
@@ -78,7 +74,7 @@ fun MainScreen(navController: NavController) {
                     .padding(top = 38.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = "Nick", fontSize = 30.sp)
+                Text(text = sharedViewModel.getPlayerInfo().username, fontSize = 30.sp)
             }
             Column(
                 modifier = Modifier
@@ -126,10 +122,4 @@ fun MainScreen(navController: NavController) {
         }
     }
 
-}
-
-@Composable
-@Preview(device = Devices.AUTOMOTIVE_1024p)
-fun Czek() {
-    MainScreen(navController = rememberNavController())
 }

@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,11 +28,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.poker.yks.data.Status
 import com.poker.yks.navigation.Screen
+import com.poker.yks.ui.screens.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrationScreen(navController: NavController) {
+fun RegistrationScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -40,8 +43,26 @@ fun RegistrationScreen(navController: NavController) {
 
     val context = LocalContext.current
     val registrationViewModel: RegistrationViewModel = viewModel()
+    registrationViewModel.status.collectAsState()
 
-    val status = registrationViewModel.status.collectAsState()
+    val loginStatus by registrationViewModel.status.collectAsState()
+
+    LaunchedEffect(loginStatus) {
+        when (loginStatus) {
+            Status.SUCCESS -> {
+                sharedViewModel.setPlayerInfo(registrationViewModel.player.value)
+                navController.navigate(Screen.MainScreen.route)
+            }
+            Status.FAIL -> {
+                if (email.isNotBlank() && password.isNotBlank()) {
+                    Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else -> {
+
+            }
+        }
+    }
 
     Scaffold(
         content = { padding ->
@@ -128,15 +149,6 @@ fun RegistrationScreen(navController: NavController) {
                                 email = email,
                                 password = password
                             )
-                            if (status.value) {
-                                navController.navigate(Screen.MainScreen.route)
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "Change the given information!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
                         }
                     },
                     enabled = username.isNotBlank()

@@ -33,13 +33,13 @@ fun Navigation() {
             LoginScreen(navController = navController, sharedViewModel)
         }
         composable(route = Screen.RegistrationScreen.route) {
-            RegistrationScreen(navController = navController)
+            RegistrationScreen(navController = navController, sharedViewModel)
         }
         composable(route = Screen.ChooseServerScreen.route) {
             ChooseServerScreen(navController = navController, sharedViewModel)
         }
         composable(route = Screen.MainScreen.route) {
-            MainScreen(navController = navController)
+            MainScreen(navController = navController, sharedViewModel)
         }
         composable(route = Screen.LeaderboardScreen.route) {
             LeaderboardScreen(navController = navController)
