@@ -81,32 +81,19 @@ dependencies {
 
     //    Rest API
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-//    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation( "com.squareup.moshi:moshi:1.14.0")
     implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     kapt ("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
 
-
-
-
 // Moshi
-
-
-
-
-
-
-
     implementation ("com.google.dagger:hilt-android:2.45")
     kapt ("com.google.dagger:hilt-android-compiler:2.45")
     implementation( "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
     kapt ("androidx.hilt:hilt-compiler:1.1.0")
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
-
     implementation ("com.google.code.gson:gson:2.9.0")
-
     implementation ("com.jakewharton.timber:timber:5.0.1")
 
 

@@ -31,7 +31,6 @@ import com.poker.yks.ui.screens.SharedViewModel
 fun MainScreen(navController: NavController, sharedViewModel: SharedViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
 
-
         Image(
             painter = painterResource(id = R.drawable.pokeryks),
             contentDescription = null,

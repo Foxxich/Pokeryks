@@ -50,28 +50,36 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text(
-                text = "Shop - Become a VIP",
+                text = "Shop",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                color = Color.White
             )
             Text(
-                text = "Unlock exclusive features by becoming a VIP!",
-                color = Color.White,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                text = "Become a VIP or Buy Coins!",
+                color = Color.White
             )
+
             Button(
                 onClick = {
-                    sharedViewModel.getPlayerInfo().vip = 1
-                    shopViewModel.processFakePayment(
-                        context,
-                        sharedViewModel.getPlayerInfo().username
-                    ) },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                    shopViewModel.processVipBuying(context, sharedViewModel.getPlayerInfo().username)
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
             ) {
                 Text(text = "Buy VIP", color = Color.White)
+            }
+            val coinOptions = listOf(50, 100, 500)
+            coinOptions.forEach { amount ->
+                Button(
+                    onClick = {
+                        shopViewModel.processTokensBuying(context, sharedViewModel.getPlayerInfo().username,
+                            amount.toString()
+                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
+                ) {
+                    Text(text = "Buy $amount Coins", color = Color.White)
+                }
             }
         }
     }
