@@ -2,7 +2,7 @@ package com.poker.yks.data.game
 
 class PokerGame(
     var listOfPlayers: List<PlayerInGame>,
-    val Card1:Card,
+    val Card1: Card,
     val Card2: Card,
     val myNick: String,
     val myTokens: Int
@@ -14,7 +14,7 @@ class PokerGame(
     var tokensOnTable = 0
     var playerInMove = ""
 
-    fun updatePokerGame(updateTable: UpdateTable){
+    fun updatePokerGame(updateTable: UpdateTable) {
         listOfPlayers = updateTable.playersStatus
         cardsOnTable.apply {
             clear()
@@ -27,10 +27,11 @@ class PokerGame(
         playerInMove = updateTable.nextPlayer
 
     }
-    fun isMoveValid(move:Move): Boolean{
+
+    fun isMoveValid(move: Move): Boolean {
         if (playerInMove != myNick) return false
 
-        return when (move.moveType){
+        return when (move.moveType) {
             "Fold" -> {
                 true
             }

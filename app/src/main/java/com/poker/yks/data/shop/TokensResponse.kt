@@ -1,14 +1,12 @@
-package com.poker.yks.data.login
+package com.poker.yks.data.shop
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class LoginResponse(
+data class TokensResponse(
     @Json(name = "username")
     val username: String,
     @Json(name = "money")
-    var money: Int,
-    @Json(name = "vip")
-    var vip: Int,
+    val money: Int,
 )

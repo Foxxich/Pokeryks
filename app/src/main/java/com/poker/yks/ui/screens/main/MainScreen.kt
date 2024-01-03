@@ -29,8 +29,8 @@ import com.poker.yks.ui.screens.SharedViewModel
 
 @Composable
 fun MainScreen(navController: NavController, sharedViewModel: SharedViewModel) {
-    Box(modifier = Modifier.fillMaxSize()) {
 
+    Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.pokeryks),
             contentDescription = null,
@@ -52,7 +52,7 @@ fun MainScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                         .padding(8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = sharedViewModel.getPlayerInfo().money.toString(), fontSize = 20.sp)
+                    Text(text = sharedViewModel.money.toString(), fontSize = 20.sp)
                 }
                 Box(
                     modifier = Modifier
@@ -61,10 +61,11 @@ fun MainScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                         .padding(8.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (sharedViewModel.getPlayerInfo().vip == 1)
+                    if (sharedViewModel.getPlayerInfo().vip == 1) {
                         Text(text = "Vip Is Active", color = Color.Red, fontSize = 20.sp)
-                    else
+                    } else {
                         Text(text = "Vip Not Active", color = Color.Red, fontSize = 20.sp)
+                    }
                 }
             }
             Box(
@@ -73,7 +74,7 @@ fun MainScreen(navController: NavController, sharedViewModel: SharedViewModel) {
                     .padding(top = 38.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text(text = sharedViewModel.getPlayerInfo().username, fontSize = 30.sp)
+                Text(text = sharedViewModel.nick, fontSize = 30.sp)
             }
             Column(
                 modifier = Modifier

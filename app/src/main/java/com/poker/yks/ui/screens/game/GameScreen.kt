@@ -32,9 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.google.gson.JsonObject
 import com.poker.yks.R
-import com.poker.yks.data.game.Move
 import com.poker.yks.data.game.MoveDTO
 import com.poker.yks.ui.screens.SharedViewModel
 
@@ -92,8 +90,8 @@ fun GameScreen(
                         .padding(16.dp)
                         .background(Color(0xFF163020)),
                     contentAlignment = Alignment.Center
-                ){
-                    Row (
+                ) {
+                    Row(
                         modifier = Modifier
                             .width(300.dp)
                             .height(200.dp)
@@ -101,7 +99,7 @@ fun GameScreen(
                         verticalAlignment = Alignment.CenterVertically
 
 //                        .background(Color(0xFF163020))
-                    ){
+                    ) {
                         Image(
                             painter = painterResource(R.drawable.backcard),
                             contentDescription = null,

@@ -14,7 +14,8 @@ data class Move(
     @Json(name = "amount")
     val amount: Int,
 )
-fun Move.toMoveDTO() : MoveDTO{
+
+fun Move.toMoveDTO(): MoveDTO {
     return MoveDTO(
         nick = nick,
         moveType = moveType,

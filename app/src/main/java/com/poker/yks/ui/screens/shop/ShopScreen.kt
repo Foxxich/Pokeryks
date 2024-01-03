@@ -62,7 +62,10 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
 
             Button(
                 onClick = {
-                    shopViewModel.processVipBuying(context, sharedViewModel.getPlayerInfo().username)
+                    shopViewModel.processVipBuying(
+                        context = context,
+                        sharedViewModel = sharedViewModel
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
             ) {
@@ -72,9 +75,12 @@ fun ShopScreen(navController: NavController, sharedViewModel: SharedViewModel) {
             coinOptions.forEach { amount ->
                 Button(
                     onClick = {
-                        shopViewModel.processTokensBuying(context, sharedViewModel.getPlayerInfo().username,
-                            amount.toString()
+                        shopViewModel.processTokensBuying(
+                            context = context,
+                            sharedViewModel = sharedViewModel,
+                            tokens = amount.toString()
                         )
+
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
                 ) {

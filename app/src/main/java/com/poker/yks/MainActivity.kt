@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
 
-            Timber.plant(Timber.DebugTree())
+        Timber.plant(Timber.DebugTree())
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
 

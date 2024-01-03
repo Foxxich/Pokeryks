@@ -9,10 +9,8 @@ import com.poker.yks.data.game.Move
 import com.poker.yks.data.game.UpdateTable
 import com.poker.yks.rest.room.WebSocketClient
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.json.JSONObject
-import timber.log.Timber
 
 class GameViewModel : ViewModel() {
     private lateinit var webSocketClient: WebSocketClient
@@ -28,7 +26,7 @@ class GameViewModel : ViewModel() {
             val xd: Any?
             val jsonObject = JSONObject(message)
             val className = jsonObject.getString("type")
-            Log.d("socketreceive",className)
+            Log.d("socketreceive", className)
             when (className) {
                 "Greeting" -> {
                     xd = determineDataType<Greeting>(message)
@@ -45,6 +43,7 @@ class GameViewModel : ViewModel() {
                 "EndGame" -> {
                     xd = determineDataType<EndGame>(message)
                 }
+
                 "Move" -> {
                     xd = determineDataType<Move>(message)
                 }
@@ -77,8 +76,9 @@ class GameViewModel : ViewModel() {
         // Return default greeting if no matching message type is found
         return DataType.GreetingResult(Greeting("hello"))
     }
+
     private fun toJson(obj: Any): String =
-         moshi.adapter(obj.javaClass).toJson(obj)
+        moshi.adapter(obj.javaClass).toJson(obj)
 
 
     fun createWebSocketConnection(url: String) {
@@ -93,12 +93,12 @@ class GameViewModel : ViewModel() {
 
         webSocketClient.sendMessage(toJson(message))
     }
-    fun exitGame(){
+
+    fun exitGame() {
         webSocketClient.disconnect()
     }
 
 }
-
 
 
 sealed class DataType {

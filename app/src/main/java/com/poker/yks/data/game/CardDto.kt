@@ -10,7 +10,8 @@ data class CardDto(
     @Json
     val type: String,
 )
-fun CardDto.toCard(): Card{
+
+fun CardDto.toCard(): Card {
     val string = color + "_" + type
     return Card(
         color = color,

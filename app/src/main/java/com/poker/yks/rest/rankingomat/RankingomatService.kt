@@ -6,7 +6,9 @@ import com.poker.yks.data.login.LoginResponse
 import com.poker.yks.data.registration.RegistrationRequest
 import com.poker.yks.data.registration.RegistrationResponse
 import com.poker.yks.data.shop.TokensRequest
+import com.poker.yks.data.shop.TokensResponse
 import com.poker.yks.data.shop.VipRequest
+import com.poker.yks.data.shop.VipResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,9 +26,9 @@ interface RankingomatService {
     suspend fun registerNewAccount(@Body request: RegistrationRequest): Response<RegistrationResponse>
 
     @POST("update_vip/")
-    suspend fun updateVipStatus(@Body request: VipRequest)
+    suspend fun updateVipStatus(@Body request: VipRequest): Response<VipResponse>
 
     @POST("purchase_tokens/")
-    suspend fun updateTokensNumber(@Body request: TokensRequest)
+    suspend fun updateTokensNumber(@Body request: TokensRequest): Response<TokensResponse>
 
 }

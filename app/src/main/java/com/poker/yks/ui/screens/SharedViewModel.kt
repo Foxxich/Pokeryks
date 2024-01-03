@@ -5,9 +5,9 @@ import com.poker.yks.data.login.LoginResponse
 import com.poker.yks.data.registration.RegistrationResponse
 
 class SharedViewModel : ViewModel() {
-    private var nick: String = ""
-    private var money: Int = 0
-    private var vip: Int = 0
+    var nick: String = ""
+    var money: Int = 0
+    var vip: Int = 0
 
 
     fun getPlayerInfo(): LoginResponse {
