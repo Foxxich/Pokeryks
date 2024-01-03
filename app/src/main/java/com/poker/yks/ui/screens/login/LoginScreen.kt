@@ -62,11 +62,13 @@ fun LoginScreen(navController: NavController, sharedViewModel: SharedViewModel) 
                 sharedViewModel.setPlayerInfo(loginViewModel.player.value)
                 navController.navigate(Screen.MainScreen.route)
             }
+
             Status.FAIL -> {
                 if (email.isNotBlank() && password.isNotBlank()) {
                     Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
                 }
             }
+
             else -> {
 
             }

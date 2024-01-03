@@ -53,11 +53,13 @@ fun RegistrationScreen(navController: NavController, sharedViewModel: SharedView
                 sharedViewModel.setPlayerInfo(registrationViewModel.player.value)
                 navController.navigate(Screen.MainScreen.route)
             }
+
             Status.FAIL -> {
                 if (email.isNotBlank() && password.isNotBlank()) {
                     Toast.makeText(context, "Incorrect data!", Toast.LENGTH_SHORT).show()
                 }
             }
+
             else -> {
 
             }
@@ -141,7 +143,8 @@ fun RegistrationScreen(navController: NavController, sharedViewModel: SharedView
                             || email.isBlank()
                             || password.isBlank()
                             || confirmPassword.isBlank()
-                            || password != confirmPassword) {
+                            || password != confirmPassword
+                        ) {
                             isFormValid = false
                         } else {
                             registrationViewModel.createAccount(

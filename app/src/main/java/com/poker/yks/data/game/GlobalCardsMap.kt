@@ -3,7 +3,7 @@ package com.poker.yks.data.game
 import com.poker.yks.R
 
 
-class GlobalCardsMap(){
+class GlobalCardsMap {
     val cardsMap by lazy {
         val map = HashMap<String, Int>()
         map["clubs_10"] = R.drawable.clubs_10
@@ -60,6 +60,7 @@ class GlobalCardsMap(){
         map["hearts_jack"] = R.drawable.hearts_jack
         map
     }
+
     companion object {
         fun getInstance(): HashMap<String, Int> {
             return GlobalCardsMap().cardsMap
