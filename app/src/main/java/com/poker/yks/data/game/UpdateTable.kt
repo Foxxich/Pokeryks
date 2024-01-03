@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class UpdateTable(
     @Json
-    val cardsOnTable: List<Card>,
+    val cardsOnTable: List<CardDto>,
     @Json
-    val playersStatus: List<PlayerInGame>,
+    val playersInGame: List<PlayerInGameDTO>,
     @Json
     val nextPlayer: String,
     @Json

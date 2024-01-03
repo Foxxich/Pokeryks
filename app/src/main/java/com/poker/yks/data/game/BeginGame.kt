@@ -1,5 +1,5 @@
 package com.poker.yks.data.game
 
 data class BeginGame(
-    val playersOrder: List<PlayerInGame>
+    val playersOrder: List<PlayerInGameDTO>
 )

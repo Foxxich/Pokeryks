@@ -1,6 +1,7 @@
 package com.poker.yks.rest.room
 
 import android.util.Log
+import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -55,6 +56,7 @@ class WebSocketClient {
 
     fun reconnect() {
         Log.e("socketCheck", "reconnect()")
+//        Thread.sleep(50000)
         initWebSocket()
     }
 

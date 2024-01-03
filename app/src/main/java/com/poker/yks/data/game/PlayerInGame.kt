@@ -3,15 +3,20 @@ package com.poker.yks.data.game
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
 data class PlayerInGame(
-    @Json(name = "nick")
     val nick: String,
-    @Json(name = "tokensInHand")
-    val tokensInHand: Int,
-    @Json(name = "cards")
-    val cards: List<Card>, //2
-    @Json
+    val tokens: Int,
+    val card1: Card?,
+    val card2: Card?,
     val winPercentage: Float?
 
 )
+fun PlayerInGame.toDTO(): PlayerInGameDTO{
+    return PlayerInGameDTO(
+        nick = nick,
+        tokens = tokens,
+        card1 = card1?.toCardDto(),
+        card2 = card2?.toCardDto(),
+        winPercentage
+    )
+}

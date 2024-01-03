@@ -1,6 +1,8 @@
 package com.poker.yks.ui.screens.game
 
 //import androidx.compose.foundation.layout.RowScopeInstance.weight
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,10 +35,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.google.gson.JsonObject
 import com.poker.yks.R
 import com.poker.yks.data.game.Move
-import com.poker.yks.data.game.MoveDTO
 import com.poker.yks.ui.screens.SharedViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +46,7 @@ fun GameScreen(
     sharedViewModel: SharedViewModel
 ) {
     val gameViewModel: GameViewModel = viewModel()
+    val context = LocalContext.current
 //    gameViewModel.createWebSocketConnection("ws://10.0.2.2:8000/ws/socket-server")
     gameViewModel.createWebSocketConnection("ws://192.168.0.107:8000/ws/socket-server")
 //    gameViewModel.createWebSocketConnection("wss://ws.postman-echo.com/raw")
@@ -92,8 +94,8 @@ fun GameScreen(
                         .padding(16.dp)
                         .background(Color(0xFF163020)),
                     contentAlignment = Alignment.Center
-                ){
-                    Row (
+                ) {
+                    Row(
                         modifier = Modifier
                             .width(300.dp)
                             .height(200.dp)
@@ -101,7 +103,7 @@ fun GameScreen(
                         verticalAlignment = Alignment.CenterVertically
 
 //                        .background(Color(0xFF163020))
-                    ){
+                    ) {
                         Image(
                             painter = painterResource(R.drawable.backcard),
                             contentDescription = null,
@@ -202,7 +204,21 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            if (!gameViewModel.isMyTurn()) {
+                                Toasting("Not Your Turn", context)
+                                return@Button
+                            }
+                            val move = Move(
+                                moveType = "fold",
+                                amount = 0,
+                                nick = "masterchlop"
+                            )
+                            val result = gameViewModel.move(move = move)
+                            if (!result) {
+                                Toasting("incorrect move", context)
+                            }
+                        },
                         modifier = Modifier.padding(16.dp), // Dark wood color for the table
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D4C41))
@@ -210,25 +226,42 @@ fun GameScreen(
                         Text(text = "Fold")
                     }
                     Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.padding(16.dp), // Dark wood color for the table
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D4C41))
-                    ) {
-                        Text(text = "Call 50")
-                    }
-                    Button(
                         onClick = {
-                            val move = MoveDTO(
+                            if (!gameViewModel.isMyTurn()) {
+                                Toasting("Not Your Turn", context)
+                                return@Button
+                            }
+                            val move = Move(
                                 moveType = "call",
                                 amount = 50,
                                 nick = "masterchlop"
                             )
-
-                            gameViewModel.sendMessage(
-                                move
-//                                """{"message":"hejka"}"""
+                            val result = gameViewModel.move(move = move)
+                            if (!result) {
+                                Toasting("incorrect move", context)
+                            }
+                        },
+                        modifier = Modifier.padding(16.dp), // Dark wood color for the table
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D4C41))
+                    ) {
+                        Text(text = "Call")
+                    }
+                    Button(
+                        onClick = {
+                            if (!gameViewModel.isMyTurn()) {
+                                Toasting("Not Your Turn", context)
+                                return@Button
+                            }
+                            val move = Move(
+                                moveType = "Bet",
+                                amount = 50,
+                                nick = "masterchlop"
                             )
+                            val result = gameViewModel.move(move = move)
+                            if (!result) {
+                                Toasting("incorrect move", context)
+                            }
                         },
                         modifier = Modifier.padding(16.dp), // Dark wood color for the table
                         shape = RoundedCornerShape(10.dp),
@@ -242,6 +275,9 @@ fun GameScreen(
     }
 }
 
+fun Toasting(string: String, context: Context) {
+    Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
+}
 
 @Preview
 @Composable

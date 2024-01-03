@@ -9,7 +9,6 @@ data class Card(
 )
 fun Card.toCardDto(): CardDto{
     return CardDto(
-        color = color,
-        type = type,
+        card = color + "_" + type
     )
 }

@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Move(
     @Json
-    val type: String,
+    val type: String = "Move",
     @Json(name = "nick")
     val nick: String, //our name
     @Json(name = "moveType")
@@ -14,10 +14,4 @@ data class Move(
     @Json(name = "amount")
     val amount: Int,
 )
-fun Move.toMoveDTO() : MoveDTO{
-    return MoveDTO(
-        nick = nick,
-        moveType = moveType,
-        amount = amount
-    )
-}
+

@@ -6,16 +6,21 @@ import com.poker.yks.data.game.BeginGame
 import com.poker.yks.data.game.EndGame
 import com.poker.yks.data.game.Greeting
 import com.poker.yks.data.game.Move
+import com.poker.yks.data.game.PokerGame
 import com.poker.yks.data.game.UpdateTable
 import com.poker.yks.rest.room.WebSocketClient
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import org.json.JSONObject
 import timber.log.Timber
 
 class GameViewModel : ViewModel() {
     private lateinit var webSocketClient: WebSocketClient
+    private lateinit var pokerGame: PokerGame
+
     var counter = 0
     val moshi: Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -36,6 +41,9 @@ class GameViewModel : ViewModel() {
 
                 "UpdateTable" -> {
                     xd = determineDataType<UpdateTable>(message)
+                    if (!::pokerGame.isInitialized){
+                        pokerGame = PokerGame(xd as UpdateTable, myNick = "", myTokens = 100)
+                    }
                 }
 
                 "BeginGame" -> {
@@ -61,6 +69,9 @@ class GameViewModel : ViewModel() {
 
         }
 
+    }
+    fun isMyTurn():Boolean{
+        return pokerGame.isMyTurn()
     }
 
     private inline fun <reified T : Any> determineDataType(message: String): Any? {
@@ -95,6 +106,15 @@ class GameViewModel : ViewModel() {
     }
     fun exitGame(){
         webSocketClient.disconnect()
+    }
+
+    fun move(move: Move):Boolean{
+        if (pokerGame.isMoveValid(move)){
+            sendMessage(move)
+            return true
+        }
+
+        return false
     }
 
 }

@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    
 
 
 
@@ -91,18 +91,8 @@ dependencies {
 
 
 
-// Moshi
-
-
-
-
-
-
-
-    implementation ("com.google.dagger:hilt-android:2.45")
-    kapt ("com.google.dagger:hilt-android-compiler:2.45")
     implementation( "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    kapt ("androidx.hilt:hilt-compiler:1.1.0")
+
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     implementation ("com.google.code.gson:gson:2.9.0")

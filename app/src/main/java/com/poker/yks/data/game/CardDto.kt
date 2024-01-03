@@ -6,15 +6,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class CardDto(
     @Json
-    val color: String,
-    @Json
-    val type: String,
+    val card: String,
 )
 fun CardDto.toCard(): Card{
-    val string = color + "_" + type
+    val string = card.split("_")
     return Card(
-        color = color,
-        type = type,
-        image = GlobalCardsMap.getInstance()[string]!!
+        color = string[0],
+        type = string[1],
+        image = GlobalCardsMap.getInstance()[card]!!
     )
 }
