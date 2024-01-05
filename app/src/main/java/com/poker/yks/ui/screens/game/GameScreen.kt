@@ -2,6 +2,7 @@ package com.poker.yks.ui.screens.game
 
 //import androidx.compose.foundation.layout.RowScopeInstance.weight
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +22,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,12 +41,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.poker.yks.R
 import com.poker.yks.data.game.Move
+import com.poker.yks.data.login.toPlayerInfoDTO
 import com.poker.yks.ui.screens.SharedViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,10 +58,19 @@ fun GameScreen(
     navController: NavController,
     sharedViewModel: SharedViewModel
 ) {
+
     val gameViewModel: GameViewModel = viewModel()
+    gameViewModel.playerInfo = sharedViewModel.getPlayerInfo().toPlayerInfoDTO()
     val context = LocalContext.current
+    var shouldRunOnce by remember { mutableStateOf(true) }
+    Log.w("Should run Once", shouldRunOnce.toString())
+    if (shouldRunOnce) {
+        gameViewModel.createWebSocketConnection("ws://192.168.0.107:8000/ws/socket-server")
+        shouldRunOnce = false
+    }
+    val updating = gameViewModel.nextPlayer.collectAsState()
 //    gameViewModel.createWebSocketConnection("ws://10.0.2.2:8000/ws/socket-server")
-    gameViewModel.createWebSocketConnection("ws://192.168.0.107:8000/ws/socket-server")
+
 //    gameViewModel.createWebSocketConnection("wss://ws.postman-echo.com/raw")
 //    gameViewModel.createWebSocketConnection("wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self")
     Box(modifier = Modifier.fillMaxSize()) {
@@ -75,8 +97,12 @@ fun GameScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text(text = "200000$", color = Color.Yellow, fontSize = 26.sp)
-                    Text(text = "hej2")
+                    Text(
+                        text = if (gameViewModel.isPokerGameInitialized) gameViewModel.pokerGame.myTokens.toString() else "",
+                        color = Color.Yellow,
+                        fontSize = 26.sp
+                    )
+                    Text(text = gameViewModel.playerInfo.player_nick)
                 }
             }
             Box(
@@ -147,13 +173,82 @@ fun GameScreen(
                     // Top Outer Box
                     Box(
                         modifier = Modifier
-                            .width(60.dp)
-                            .height(40.dp)
+                            .width(200.dp)
+                            .height(120.dp)
                             .background(Color.Red)
                             .align(Alignment.TopCenter)
                             .padding(16.dp)
                             .clip(RoundedCornerShape(10.dp))
-                    )
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                        ) {
+                            Text(
+                                text = if (gameViewModel.isPokerGameInitialized) {
+                                    val nick = gameViewModel.pokerGame.playersInGame[0].nick
+                                    val tokens =
+                                        gameViewModel.pokerGame.playersInGame[0].tokens.toString()
+                                    val text = "$nick  $tokens"
+                                    text
+                                } else ""
+                            )
+                            Row {
+                                (if (gameViewModel.isPokerGameInitialized) {
+
+                                    if (gameViewModel.playerInfo.player_nick == gameViewModel.pokerGame.myNick) {
+                                        painterResource(
+                                            gameViewModel.pokerGame.getPlayerCards(
+                                                gameViewModel.pokerGame.myNick,
+                                                0
+                                            )
+                                        )
+                                    } else
+                                        painterResource(R.drawable.backcard)
+                                } else {
+                                    null
+                                })?.let {
+                                    Image(
+                                        //                                painter = painterResource(R.drawable.backcard),
+                                        painter =
+
+                                        it,
+
+
+                                        contentDescription = null,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                                (if (gameViewModel.isPokerGameInitialized) {
+
+                                    if (gameViewModel.playerInfo.player_nick == gameViewModel.pokerGame.myNick) {
+                                        painterResource(
+                                            gameViewModel.pokerGame.getPlayerCards(
+                                                gameViewModel.pokerGame.myNick,
+                                                1
+                                            )
+                                        )
+                                    } else
+                                        painterResource(R.drawable.backcard)
+                                } else {
+                                    null
+                                })?.let {
+                                    Image(
+                                        //                                painter = painterResource(R.drawable.backcard),
+                                        painter =
+
+                                        it,
+
+
+                                        contentDescription = null,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
+                        }
+                        }
+                        //nick money card card
+
 
                     // Bottom Outer Box
                     Box(
@@ -164,34 +259,226 @@ fun GameScreen(
                             .align(Alignment.BottomCenter)
                             .padding(16.dp)
                             .clip(RoundedCornerShape(10.dp))
-                    )
+                    ) {
 
-                    // Left Outer Box
-                    Box(
-                        modifier = Modifier
-                            .width(40.dp)
-                            .height(60.dp)
+                        //nick money card card
+                        Text(
+                            text = if (gameViewModel.isPokerGameInitialized) {
+                                val nick = gameViewModel.pokerGame.playersInGame[1].nick
+                                val tokens =
+                                    gameViewModel.pokerGame.playersInGame[1].tokens.toString()
+                                val text = "$nick  $tokens"
+                                text
+                            } else ""
+                        )
+                        Row {
+                            (if (gameViewModel.isPokerGameInitialized) {
 
-                            .background(Color.Green)
-                            .align(Alignment.CenterStart)
-                            .padding(16.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
+                                if (gameViewModel.playerInfo.player_nick == gameViewModel.pokerGame.myNick) {
+                                    painterResource(
+                                        gameViewModel.pokerGame.getPlayerCards(
+                                            gameViewModel.pokerGame.myNick,
+                                            0
+                                        )
+                                    )
+                                } else
+                                    painterResource(R.drawable.backcard)
+                            } else {
+                                null
+                            })?.let {
+                                Image(
+                                    //                                painter = painterResource(R.drawable.backcard),
+                                    painter =
 
-                    // Right Outer Box
-                    Box(
-                        modifier = Modifier
-                            .width(40.dp)
-                            .height(60.dp)
-                            .background(Color.Yellow)
-                            .align(Alignment.CenterEnd)
-                            .padding(16.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
+                                    it,
+
+
+                                    contentDescription = null,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                            (if (gameViewModel.isPokerGameInitialized) {
+
+                                if (gameViewModel.playerInfo.player_nick == gameViewModel.pokerGame.myNick) {
+                                    painterResource(
+                                        gameViewModel.pokerGame.getPlayerCards(
+                                            gameViewModel.pokerGame.myNick,
+                                            1
+                                        )
+                                    )
+                                } else
+                                    painterResource(R.drawable.backcard)
+                            } else {
+                                null
+                            })?.let {
+                                Image(
+                                    //                                painter = painterResource(R.drawable.backcard),
+                                    painter =
+
+                                    it,
+
+
+                                    contentDescription = null,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+                    }
                 }
 
+                // Left Outer Box
+                Box(
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(60.dp)
 
+                        .background(Color.Green)
+                        .align(Alignment.CenterStart)
+                        .padding(16.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                ) {
+                    //nick money card card
+                    Text(
+                        text = if (gameViewModel.isPokerGameInitialized) {
+                            val nick = gameViewModel.pokerGame.playersInGame[2].nick
+                            val tokens =
+                                gameViewModel.pokerGame.playersInGame[2].tokens.toString()
+                            val text = "$nick\n$tokens"
+                            text
+                        } else "",
+                        fontSize = 10.sp
+                    )
+                    Row {
+                        (if (gameViewModel.isPokerGameInitialized) {
+
+                            if (gameViewModel.playerInfo.player_nick == gameViewModel.pokerGame.myNick) {
+                                painterResource(
+                                    gameViewModel.pokerGame.getPlayerCards(
+                                        gameViewModel.pokerGame.myNick,
+                                        0
+                                    )
+                                )
+                            } else
+                                painterResource(R.drawable.backcard)
+                        } else {
+                            null
+                        })?.let {
+                            Image(
+                                //                                painter = painterResource(R.drawable.backcard),
+                                painter =
+
+                                it,
+
+
+                                contentDescription = null,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                        (if (gameViewModel.isPokerGameInitialized) {
+
+                            if (gameViewModel.playerInfo.player_nick == gameViewModel.pokerGame.myNick) {
+                                painterResource(
+                                    gameViewModel.pokerGame.getPlayerCards(
+                                        gameViewModel.pokerGame.myNick,
+                                        1
+                                    )
+                                )
+                            } else
+                                painterResource(R.drawable.backcard)
+                        } else {
+                            null
+                        })?.let {
+                            Image(
+                                //                                painter = painterResource(R.drawable.backcard),
+                                painter =
+
+                                it,
+
+
+                                contentDescription = null,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+                }
+
+                // Right Outer Box
+                Box(
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(60.dp)
+                        .background(Color.Yellow)
+                        .align(Alignment.CenterEnd)
+                        .padding(16.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                ) {
+                    //nick money card card
+                    Text(
+                        text = if (gameViewModel.isPokerGameInitialized) {
+                            val nick = gameViewModel.pokerGame.playersInGame[3].nick
+                            val tokens =
+                                gameViewModel.pokerGame.playersInGame[3].tokens.toString()
+                            val text = "$nick\n$tokens"
+                            text
+                        } else ""
+                    )
+                    Row {
+                        (if (gameViewModel.isPokerGameInitialized) {
+
+                            if (gameViewModel.playerInfo.player_nick == gameViewModel.pokerGame.myNick) {
+                                painterResource(
+                                    gameViewModel.pokerGame.getPlayerCards(
+                                        gameViewModel.pokerGame.myNick,
+                                        0
+                                    )
+                                )
+                            } else
+                                painterResource(R.drawable.backcard)
+                        } else {
+                            null
+                        })?.let {
+                            Image(
+                                //                                painter = painterResource(R.drawable.backcard),
+                                painter =
+
+                                it,
+
+
+                                contentDescription = null,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                        (if (gameViewModel.isPokerGameInitialized) {
+
+                            if (gameViewModel.playerInfo.player_nick == gameViewModel.pokerGame.myNick) {
+                                painterResource(
+                                    gameViewModel.pokerGame.getPlayerCards(
+                                        gameViewModel.pokerGame.myNick,
+                                        1
+                                    )
+                                )
+                            } else
+                                painterResource(R.drawable.backcard)
+                        } else {
+                            null
+                        })?.let {
+                            Image(
+                                //                                painter = painterResource(R.drawable.backcard),
+                                painter =
+
+                                it,
+
+
+                                contentDescription = null,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+                }
             }
+
+
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -273,8 +560,8 @@ fun GameScreen(
             }
         }
     }
-}
 
+}
 fun Toasting(string: String, context: Context) {
     Toast.makeText(context, string, Toast.LENGTH_SHORT).show()
 }

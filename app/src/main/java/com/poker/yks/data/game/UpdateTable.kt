@@ -11,7 +11,7 @@ data class UpdateTable(
     @Json
     val playersInGame: List<PlayerInGameDTO>,
     @Json
-    val nextPlayer: String,
+    val nextPlayer: String? = "",
     @Json
     val tokensOnTable: Int,
     @Json

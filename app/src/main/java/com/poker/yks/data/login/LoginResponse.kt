@@ -1,5 +1,6 @@
 package com.poker.yks.data.login
 
+import com.poker.yks.data.game.PlayerInfoDTO
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,3 +13,11 @@ data class LoginResponse(
     @Json(name = "vip")
     var vip: Int,
 )
+
+fun LoginResponse.toPlayerInfoDTO(): PlayerInfoDTO{
+    return PlayerInfoDTO(
+        player_nick = username,
+        tokens = money,
+        vip = vip
+    )
+}

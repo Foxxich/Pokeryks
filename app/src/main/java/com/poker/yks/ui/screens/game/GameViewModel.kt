@@ -1,24 +1,41 @@
 package com.poker.yks.ui.screens.game
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.poker.yks.data.game.BeginGame
 import com.poker.yks.data.game.EndGame
 import com.poker.yks.data.game.Greeting
 import com.poker.yks.data.game.Move
+import com.poker.yks.data.game.Ping
+import com.poker.yks.data.game.PlayerInfoDTO
 import com.poker.yks.data.game.PokerGame
 import com.poker.yks.data.game.UpdateTable
+import com.poker.yks.data.login.LoginResponse
 import com.poker.yks.rest.room.WebSocketClient
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.json.JSONObject
+import timber.log.Timber
+import java.util.logging.Handler
 
 class GameViewModel : ViewModel() {
     private lateinit var webSocketClient: WebSocketClient
-    private lateinit var pokerGame: PokerGame
+    lateinit var pokerGame: PokerGame
+    var isPokerGameInitialized = false
+    private val _nextPlayer = MutableStateFlow<String>("")
+    val nextPlayer = _nextPlayer.asStateFlow()
+    var wasTriggered = false
 
+    lateinit var playerInfo: PlayerInfoDTO
+    var isConnected = false
     var counter = 0
     val moshi: Moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -38,10 +55,25 @@ class GameViewModel : ViewModel() {
                 }
 
                 "UpdateTable" -> {
-                    xd = determineDataType<UpdateTable>(message)
-                    if (!::pokerGame.isInitialized){
-                        pokerGame = PokerGame(xd as UpdateTable, myNick = "", myTokens = 100)
+                    xd = determineDataType<UpdateTable>(message) as UpdateTable
+                    Timber.tag("updating").d("updating1")
+                    val me = xd.playersInGame.find { it.nick == playerInfo.player_nick }!!
+                    Timber.tag("updating2").d("updating1")
+                    if (!::pokerGame.isInitialized) {
+                        Timber.tag("updating200").d(xd.toString())
+                        pokerGame = PokerGame(
+                            xd,
+                            me.nick,
+                            me.tokens,
+                            playerInfo.vip
+                        )
+                        isPokerGameInitialized = true
+                    } else {
+                        Timber.tag("updating3").d("updating1")
+                        pokerGame.refreshTable(xd)
+                        _nextPlayer.update { pokerGame.playerInMove }
                     }
+                    Timber.tag("updating4").d("updating1")
                 }
 
                 "BeginGame" -> {
@@ -54,6 +86,11 @@ class GameViewModel : ViewModel() {
 
                 "Move" -> {
                     xd = determineDataType<Move>(message)
+                }
+
+                "Ping" -> {
+                    xd = determineDataType<Ping>(message)
+                    isConnected = true
                 }
 
                 else -> {
@@ -69,7 +106,8 @@ class GameViewModel : ViewModel() {
         }
 
     }
-    fun isMyTurn():Boolean{
+
+    fun isMyTurn(): Boolean {
         return pokerGame.isMyTurn()
     }
 
@@ -85,7 +123,7 @@ class GameViewModel : ViewModel() {
         }
 
         // Return default greeting if no matching message type is found
-        return DataType.GreetingResult(Greeting("hello"))
+        return moshi.adapter(Greeting::class.java)
     }
 
     private fun toJson(obj: Any): String =
@@ -93,11 +131,23 @@ class GameViewModel : ViewModel() {
 
 
     fun createWebSocketConnection(url: String) {
+        if (!wasTriggered){
+            webSocketClient = WebSocketClient.getInstance()
+            webSocketClient.setSocketUrl(url)
+            webSocketClient.setListener(socketListener)
+            webSocketClient.connect()
+            GlobalScope.launch {
+                delay(250)
+                Log.d("playerinfo", playerInfo.toString())
+                val json = toJson(playerInfo)
+                Log.d("playerinfojson", json)
+                sendMessage(playerInfo)
 
-        webSocketClient = WebSocketClient.getInstance()
-        webSocketClient.setSocketUrl(url)
-        webSocketClient.setListener(socketListener)
-        webSocketClient.connect()
+            }
+        }
+
+
+
     }
 
     fun sendMessage(message: Any) {
@@ -109,23 +159,14 @@ class GameViewModel : ViewModel() {
         webSocketClient.disconnect()
     }
 
-    fun move(move: Move):Boolean{
-        if (pokerGame.isMoveValid(move)){
+    fun move(move: Move): Boolean {
+        if (pokerGame.isMoveValid(move)) {
             sendMessage(move)
             return true
         }
 
         return false
     }
-
-}
-
-
-sealed class DataType {
-    data class GreetingResult(val greeting: Greeting) : DataType()
-    data class BeginGameResult(val beginGame: BeginGame) : DataType()
-    data class UpdateTableResult(val updateTable: UpdateTable) : DataType()
-    data class EndGameResult(val endGame: EndGame) : DataType()
 
 }
 
