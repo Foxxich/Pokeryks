@@ -10,14 +10,14 @@ data class CardDto(
     val card: String?,
 )
 fun CardDto.toCard(): Card{
-    Log.d("cipeczka", card!!)
-    val string = card.split("_")
-    Log.d("cipeczka", string[0]+string[1])
+
+    val string = card!!.split("_")
+
     try {
-        Log.d("karta", GlobalCardsMap.getInstance()[card]!!.toString())
+
     }
     catch (e: Exception){
-        Log.d("smuteg",card)
+
     }
     return Card(
         color = string[0],

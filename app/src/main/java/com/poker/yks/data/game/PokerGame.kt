@@ -2,6 +2,7 @@ package com.poker.yks.data.game
 
 import android.util.Log
 import com.poker.yks.R
+import kotlin.math.log
 
 class PokerGame(
     val updateTable: UpdateTable,
@@ -20,26 +21,18 @@ class PokerGame(
     var mePlaying : PlayerInGameDTO? = null
 
 init {
-    Log.d("pizda1",updateTable.cardsOnTable.toString())
-    Log.d("pizda1","mysz".toString())
+
     val cardList = updateTable.cardsOnTable.map { it.toCard() }
-    Log.d("pizda1",cardList.toString())
     cardsOnTable.clear()
     cardsOnTable.addAll(cardList)
-
     playersInGame.clear()
     playersInGame.addAll(updateTable.playersInGame)
-    Log.d("pizda1",playersInGame.toString())
-    playerInMove = updateTable.nextPlayer!!
-    Log.d("pizda1",playerInMove.toString())
+    Log.w("players",playersInGame.toString())
     tokensOnTable = updateTable.tokensOnTable
-    Log.d("pizda1",tokensOnTable.toString())
     lastCall = updateTable.lastCall
-    Log.d("pizda1",lastCall.toString())
+    mePlaying = playersInGame.find { it.nick == myNick }
 
-    val mePlayingDTO = playersInGame.find { it.nick == myNick }
-    Log.d("pizda1",mePlayingDTO.toString())
-    if (mePlayingDTO!= null){
+    if (mePlaying!= null){
         try {
             winPercentage = mePlaying!!.winPercentage
         }
@@ -47,10 +40,32 @@ init {
             winPercentage = 0f
         }
 
-
+        playerInMove = updateTable.nextPlayer!!
 
     }
 }
+    fun refreshTable(updateTable: UpdateTable){
+        cardsOnTable.clear()
+        cardsOnTable.addAll(updateTable.cardsOnTable.map { it.toCard() })
+        playersInGame.clear()
+        playersInGame.addAll(updateTable.playersInGame)
+
+        tokensOnTable = updateTable.tokensOnTable
+
+        lastCall = updateTable.lastCall
+
+        mePlaying = playersInGame.find { it.nick == myNick }
+
+        if (mePlaying!= null){
+            try {
+                winPercentage = mePlaying!!.winPercentage
+            }
+            catch (e:Exception){
+                winPercentage = 0f
+            }
+        }
+        playerInMove = updateTable.nextPlayer!!
+    }
     //    fun updatePokerGame(updateTable: UpdateTable){
 //        listOfPlayers = updateTable.playersStatus
 //        cardsOnTable.apply {
@@ -67,14 +82,39 @@ init {
     fun isMyTurn():Boolean{
         return playerInMove == myNick
     }
-    fun getPlayerCards(nick:String, card:Int):Int{
-        val playerInGame = playersInGame.find { it.nick == nick }!!.toPlayerInGame()
-        return if (card == 0){
-            if (playerInGame.card1!= null) playerInGame.card1.image else R.drawable.backcard
-        } else{
-            if (playerInGame.card2!= null) playerInGame.card2.image else R.drawable.backcard
+    fun getPlayerCards(nick:String, card:Int):Int?{
+        Log.i("raczysko0",nick.toString())
+        Log.i("raczysko00",playersInGame.toString())
+        try {
+            val playerDTO = playersInGame.find { it.nick == nick }
+            Log.i("raczysko1",playerDTO.toString())
+            val player = playerDTO?.toPlayerInGame()
+            Log.i("raczysko1",player.toString())
+            if (player?.nick != myNick){
+                return R.drawable.backcard
+            }
+            return if (card == 0){
+                if (player.card1!= null) player.card1.image else R.drawable.backcard
+            } else{
+                if (player.card2!= null) player.card2.image else R.drawable.backcard
+            }
+
+        }
+        catch (e: Exception){
+            Log.e("dupnik",e.toString())
+            return null
         }
 
+
+
+    }
+    fun getTableCard(id:Int):Int{
+        try {
+            return  cardsOnTable[id].image
+        }
+        catch (e:Exception){
+            return R.drawable.backcard
+        }
     }
     fun isMoveValid(move: Move): Boolean {
         if (!isMyTurn()) return false
@@ -97,8 +137,6 @@ init {
             }
         }
     }
-    fun refreshTable(updateTable: UpdateTable){
 
-    }
 
 }

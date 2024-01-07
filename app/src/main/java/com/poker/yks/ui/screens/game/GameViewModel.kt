@@ -67,11 +67,23 @@ class GameViewModel : ViewModel() {
                             me.tokens,
                             playerInfo.vip
                         )
+                        Timber.tag("updating201").d(pokerGame.toString())
                         isPokerGameInitialized = true
+                        try {
+                            pokerGame.refreshTable(xd)
+                            Timber.tag("updating202").d(pokerGame.toString())
+                            _nextPlayer.update { pokerGame.playerInMove }
+                            Timber.tag("updating203").d(pokerGame.toString())
+                        }
+                        catch (e:Exception){
+                            Timber.tag("updating222").d(pokerGame.toString())
+                        }
                     } else {
                         Timber.tag("updating3").d("updating1")
                         pokerGame.refreshTable(xd)
+                        Timber.tag("updating31").d(_nextPlayer.value.toString())
                         _nextPlayer.update { pokerGame.playerInMove }
+                        Timber.tag("updating32").d(_nextPlayer.value.toString())
                     }
                     Timber.tag("updating4").d("updating1")
                 }
