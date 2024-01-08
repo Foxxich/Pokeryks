@@ -14,11 +14,7 @@ import kotlinx.coroutines.withContext
 class ChooseServerViewModel : ViewModel() {
 
     private val serverStatusRepository = ServerStatusRepository()
-
-    private val _server = MutableStateFlow("")
-    val server = _server.asStateFlow()
-
-    val _dummyServerList = MutableStateFlow<List<ServerStatusRequest>>(emptyList())
+    private val _dummyServerList = MutableStateFlow<List<ServerStatusRequest>>(emptyList())
     val dummyServerList = _dummyServerList.asStateFlow()
 
     fun chooseServer(serverId: String) {

@@ -1,7 +1,5 @@
 package com.poker.yks.ui.screens.chooseServer
 
-//import androidx.compose.foundation.layout.RowScopeInstance.weight
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,31 +35,14 @@ import com.poker.yks.R
 import com.poker.yks.navigation.Screen
 import com.poker.yks.ui.screens.SharedViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedViewModel) {
 
     val chooseServerViewModel: ChooseServerViewModel = viewModel()
-
-    val context = LocalContext.current
-
-
-//    val serverList = chooseServerViewModel.serverStatus.collectAsState()
     val dummyServerList = chooseServerViewModel.dummyServerList.collectAsState()
-//
-//    val server = chooseServerViewModel.server.collectAsState()
-//    val dummyServer = chooseServerViewModel.dummyServer.collectAsState()
-//    when (dummyServer.value) {
-//        "" -> {}
-//        else -> {
-//            navController.navigate(Screen.GameScreen.route)
-//        }
-//    }
     chooseServerViewModel.getDummyServerList()
-//    chooseServerViewModel.getDummyServerList()
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-
 
         Image(
             painter = painterResource(id = R.drawable.pokeryks),
@@ -83,9 +62,8 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                     .padding(top = 30.dp)
                     .background(color = colorResource(id = R.color.light_tree)),
                 verticalArrangement = Arrangement.Top,
-//            horizontalAlignment = Alignment.End,
 
-            ) {
+                ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -125,16 +103,13 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                         )
 
                         {
-                            Log.i("listownia", server.toString())
                             Text(
                                 text = "IP ${server.ip}",
                                 fontSize = 24.sp,
-//                                modifier = Modifier.weight(1f)
                             )
                             Text(
                                 text = "Occupancy ${server.occupation}",
                                 fontSize = 24.sp,
-//                                modifier = Modifier.weight(1f)
                             )
                         }
 
@@ -160,17 +135,11 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                     modifier = Modifier.width(300.dp)
                 ) {
                     Text(text = "cofnij do menu")
-
                 }
             }
         }
-
-
     }
-
-
 }
-
 
 @Composable
 @Preview
