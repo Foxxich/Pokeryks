@@ -1,6 +1,5 @@
 package com.poker.yks.data.game
 
-import android.util.Log
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -9,14 +8,14 @@ data class CardDto(
     @Json
     val card: String?,
 )
-fun CardDto.toCard(): Card{
+
+fun CardDto.toCard(): Card {
 
     val string = card!!.split("_")
 
     try {
 
-    }
-    catch (e: Exception){
+    } catch (e: Exception) {
 
     }
     return Card(
