@@ -48,11 +48,11 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
     val context = LocalContext.current
 
 
-    val serverList = chooseServerViewModel.serverStatus.collectAsState()
+//    val serverList = chooseServerViewModel.serverStatus.collectAsState()
     val dummyServerList = chooseServerViewModel.dummyServerList.collectAsState()
-
-    val server = chooseServerViewModel.server.collectAsState()
-    val dummyServer = chooseServerViewModel.dummyServer.collectAsState()
+//
+//    val server = chooseServerViewModel.server.collectAsState()
+//    val dummyServer = chooseServerViewModel.dummyServer.collectAsState()
 //    when (dummyServer.value) {
 //        "" -> {}
 //        else -> {
@@ -98,12 +98,7 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
 
                 LazyColumn(
                     modifier = Modifier
-//                        .fillMaxSize()
-//                        .weight(1f)
                         .fillMaxWidth()
-//                            .padding(32.dp),
-//                    verticalArrangement = Arrangement.Center,
-//                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     itemsIndexed(items = dummyServerList.value) { index, server ->
                         Row(modifier = Modifier
@@ -113,7 +108,7 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                             .height(40.dp)
                             .clickable {
                                 chooseServerViewModel.chooseServer(
-                                    server, sharedViewModel.getPlayerInfo(), context
+                                    server.ip
                                 )
                                 navController.navigate(Screen.GameScreen.route)
                             }

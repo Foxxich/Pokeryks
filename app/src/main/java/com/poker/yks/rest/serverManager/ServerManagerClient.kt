@@ -5,7 +5,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object ServerManagerClient {
 
-    private const val BASE_URL = "https://serverManager.com/"
+    //    private const val BASE_URL = "http://192.168.0.108:8002/"
+    private const val BASE_URL = "http://10.0.2.2:8002/"
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
