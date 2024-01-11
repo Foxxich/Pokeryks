@@ -19,6 +19,7 @@ class PokerGame(
     var tokensOnTable = 0
     var playerInMove = ""
     var mePlaying : PlayerInGameDTO? = null
+    var isGameFinished = false
 
 init {
 
@@ -31,7 +32,7 @@ init {
     tokensOnTable = updateTable.tokensOnTable
     lastCall = updateTable.lastCall
     mePlaying = playersInGame.find { it.nick == myNick }
-
+    isGameFinished = false
     if (mePlaying!= null){
         try {
             winPercentage = mePlaying!!.winPercentage
@@ -49,13 +50,10 @@ init {
         cardsOnTable.addAll(updateTable.cardsOnTable.map { it.toCard() })
         playersInGame.clear()
         playersInGame.addAll(updateTable.playersInGame)
-
         tokensOnTable = updateTable.tokensOnTable
-
         lastCall = updateTable.lastCall
-
         mePlaying = playersInGame.find { it.nick == myNick }
-
+        isGameFinished = updateTable.isFinished
         if (mePlaying!= null){
             try {
                 winPercentage = mePlaying!!.winPercentage
@@ -66,37 +64,25 @@ init {
         }
         playerInMove = updateTable.nextPlayer!!
     }
-    //    fun updatePokerGame(updateTable: UpdateTable){
-//        listOfPlayers = updateTable.playersStatus
-//        cardsOnTable.apply {
-//            clear()
-//            addAll(
-//                updateTable.cardsOnTable
-//            )
-//        }
-//        lastPlayerTokensPut = updateTable.lastCall
-//        tokensOnTable = updateTable.tokensOnTable
-//        playerInMove = updateTable.nextPlayer
-//
-//    }
+
     fun isMyTurn():Boolean{
         return playerInMove == myNick
     }
     fun getPlayerCards(nick:String, card:Int):Int?{
-        Log.i("raczysko0",nick.toString())
-        Log.i("raczysko00",playersInGame.toString())
+//        Log.i("raczysko0",nick.toString())
+//        Log.i("raczysko00",playersInGame.toString())
         try {
             val playerDTO = playersInGame.find { it.nick == nick }
-            Log.i("raczysko1",playerDTO.toString())
+//            Log.i("raczysko1",playerDTO.toString())
             val player = playerDTO?.toPlayerInGame()
-            Log.i("raczysko1",player.toString())
-            if (player?.nick != myNick){
+//            Log.i("raczysko1",player.toString())
+            if (player?.nick != myNick && !isGameFinished){
                 return R.drawable.backcard
             }
             return if (card == 0){
-                if (player.card1!= null) player.card1.image else R.drawable.backcard
+                if (player!!.card1!= null) player.card1!!.image else R.drawable.backcard
             } else{
-                if (player.card2!= null) player.card2.image else R.drawable.backcard
+                if (player!!.card2!= null) player.card2!!.image else R.drawable.backcard
             }
 
         }
@@ -109,11 +95,10 @@ init {
 
     }
     fun getTableCard(id:Int):Int{
-        try {
-            return  cardsOnTable[id].image
-        }
-        catch (e:Exception){
-            return R.drawable.backcard
+        return try {
+            cardsOnTable[id].image
+        } catch (e:Exception){
+            R.drawable.backcard
         }
     }
     fun isMoveValid(move: Move): Boolean {

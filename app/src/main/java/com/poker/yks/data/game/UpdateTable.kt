@@ -15,5 +15,7 @@ data class UpdateTable(
     @Json
     val tokensOnTable: Int,
     @Json
-    val lastCall: Int
+    val lastCall: Int,
+    @Json
+    val isFinished: Boolean
 )

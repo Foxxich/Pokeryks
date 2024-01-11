@@ -56,9 +56,8 @@ class GameViewModel : ViewModel() {
 
                 "UpdateTable" -> {
                     xd = determineDataType<UpdateTable>(message) as UpdateTable
-                    Timber.tag("updating").d("updating1")
+
                     val me = xd.playersInGame.find { it.nick == playerInfo.player_nick }!!
-                    Timber.tag("updating2").d("updating1")
                     if (!::pokerGame.isInitialized) {
                         Timber.tag("updating200").d(xd.toString())
                         pokerGame = PokerGame(
@@ -67,43 +66,43 @@ class GameViewModel : ViewModel() {
                             me.tokens,
                             playerInfo.vip
                         )
-                        Timber.tag("updating201").d(pokerGame.toString())
+
                         isPokerGameInitialized = true
                         try {
                             pokerGame.refreshTable(xd)
-                            Timber.tag("updating202").d(pokerGame.toString())
+
                             _nextPlayer.update { pokerGame.playerInMove }
-                            Timber.tag("updating203").d(pokerGame.toString())
+
                         }
                         catch (e:Exception){
-                            Timber.tag("updating222").d(pokerGame.toString())
+
                         }
                     } else {
-                        Timber.tag("updating3").d("updating1")
+
                         pokerGame.refreshTable(xd)
-                        Timber.tag("updating31").d(_nextPlayer.value.toString())
+
                         _nextPlayer.update { pokerGame.playerInMove }
-                        Timber.tag("updating32").d(_nextPlayer.value.toString())
+
                     }
-                    Timber.tag("updating4").d("updating1")
+
                 }
 
-                "BeginGame" -> {
-                    xd = determineDataType<BeginGame>(message)
-                }
+//                "BeginGame" -> {
+//                    xd = determineDataType<BeginGame>(message)
+//                }
+//
+//                "EndGame" -> {
+//                    xd = determineDataType<EndGame>(message)
+//                }
+//
+//                "Move" -> {
+//                    xd = determineDataType<Move>(message)
+//                }
 
-                "EndGame" -> {
-                    xd = determineDataType<EndGame>(message)
-                }
-
-                "Move" -> {
-                    xd = determineDataType<Move>(message)
-                }
-
-                "Ping" -> {
-                    xd = determineDataType<Ping>(message)
-                    isConnected = true
-                }
+//                "Ping" -> {
+//                    xd = determineDataType<Ping>(message)
+//                    isConnected = true
+//                }
 
                 else -> {
                     xd = Greeting(message)
@@ -150,9 +149,9 @@ class GameViewModel : ViewModel() {
             webSocketClient.connect()
             GlobalScope.launch {
                 delay(250)
-                Log.d("playerinfo", playerInfo.toString())
+//                Log.d("playerinfo", playerInfo.toString())
                 val json = toJson(playerInfo)
-                Log.d("playerinfojson", json)
+//                Log.d("playerinfojson", json)
                 sendMessage(playerInfo)
 
             }
