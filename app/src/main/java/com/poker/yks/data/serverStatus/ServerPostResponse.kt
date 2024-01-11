@@ -4,9 +4,11 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ServerStatusRequest(
-    @Json(name = "occupation")
-    val occupation: String,
+data class ServerPostResponse(
     @Json(name = "ip")
-    val ip: Int,
+    var ip: String,
+    @Json(name = "occupation")
+    var occupation: Int,
+    @Json(name = "message")
+    val message: String,
 )

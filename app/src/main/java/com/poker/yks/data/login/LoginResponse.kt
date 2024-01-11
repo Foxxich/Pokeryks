@@ -14,7 +14,7 @@ data class LoginResponse(
     var vip: Int,
 )
 
-fun LoginResponse.toPlayerInfoDTO(): PlayerInfoDTO{
+fun LoginResponse.toPlayerInfoDTO(): PlayerInfoDTO {
     return PlayerInfoDTO(
         player_nick = username,
         tokens = money,

@@ -6,5 +6,5 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Ping(
     @Json
-    val type:String = "Ping",
+    val type: String = "Ping",
 )

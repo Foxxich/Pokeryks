@@ -1,8 +1,5 @@
 package com.poker.yks.data.game
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
-
 data class PlayerInGame(
     val nick: String,
     val tokens: Int,
@@ -11,7 +8,8 @@ data class PlayerInGame(
     val winPercentage: Float?
 
 )
-fun PlayerInGame.toDTO(): PlayerInGameDTO{
+
+fun PlayerInGame.toDTO(): PlayerInGameDTO {
     return PlayerInGameDTO(
         nick = nick,
         tokens = tokens,

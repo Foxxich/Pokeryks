@@ -39,7 +39,7 @@ import com.poker.yks.ui.screens.SharedViewModel
 fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedViewModel) {
 
     val chooseServerViewModel: ChooseServerViewModel = viewModel()
-    val dummyServerList = chooseServerViewModel.dummyServerList.collectAsState()
+    val dummyServers = chooseServerViewModel.dummyServers.collectAsState()
     chooseServerViewModel.getDummyServerList()
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
@@ -78,17 +78,14 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    itemsIndexed(items = dummyServerList.value) { index, server ->
+                    itemsIndexed(items = dummyServers.value.values.toList()) { _, server ->
                         Row(modifier = Modifier
                             .padding(5.dp)
                             .border(width = 2.dp, color = Color.Black)
                             .fillMaxWidth()
                             .height(40.dp)
                             .clickable {
-                                chooseServerViewModel.chooseServer(
-                                    server.ip
-                                )
-                                navController.navigate(Screen.GameScreen.route)
+                                //TODO: manage in appropriate way
                             }
                             .let {
                                 if (server.occupation == 0) {
@@ -99,7 +96,6 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                             },
                             horizontalArrangement = Arrangement.SpaceAround,
                             verticalAlignment = Alignment.CenterVertically
-
                         )
 
                         {
@@ -112,10 +108,8 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                                 fontSize = 24.sp,
                             )
                         }
-
                     }
                 }
-
 
             }
             Column(
@@ -127,14 +121,14 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                         chooseServerViewModel.getDummyServerList()
                     }, modifier = Modifier.width(300.dp)
                 ) {
-                    Text(text = "odśwież liste")
+                    Text(text = "Update list")
 
                 }
                 Button(
                     onClick = { navController.navigate(Screen.MainScreen.route) },
                     modifier = Modifier.width(300.dp)
                 ) {
-                    Text(text = "cofnij do menu")
+                    Text(text = "Return to Menu")
                 }
             }
         }
