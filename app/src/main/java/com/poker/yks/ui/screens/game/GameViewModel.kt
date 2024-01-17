@@ -1,18 +1,12 @@
 package com.poker.yks.ui.screens.game
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.poker.yks.data.game.BeginGame
-import com.poker.yks.data.game.EndGame
 import com.poker.yks.data.game.Greeting
 import com.poker.yks.data.game.Move
-import com.poker.yks.data.game.Ping
 import com.poker.yks.data.game.PlayerInfoDTO
 import com.poker.yks.data.game.PokerGame
 import com.poker.yks.data.game.UpdateTable
-import com.poker.yks.data.login.LoginResponse
 import com.poker.yks.rest.room.WebSocketClient
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -24,7 +18,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import timber.log.Timber
-import java.util.logging.Handler
 
 class GameViewModel : ViewModel() {
     private lateinit var webSocketClient: WebSocketClient
@@ -73,8 +66,7 @@ class GameViewModel : ViewModel() {
 
                             _nextPlayer.update { pokerGame.playerInMove }
 
-                        }
-                        catch (e:Exception){
+                        } catch (e: Exception) {
 
                         }
                     } else {
@@ -142,7 +134,7 @@ class GameViewModel : ViewModel() {
 
 
     fun createWebSocketConnection(url: String) {
-        if (!wasTriggered){
+        if (!wasTriggered) {
             webSocketClient = WebSocketClient.getInstance()
             webSocketClient.setSocketUrl(url)
             webSocketClient.setListener(socketListener)
@@ -156,7 +148,6 @@ class GameViewModel : ViewModel() {
 
             }
         }
-
 
 
     }

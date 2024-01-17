@@ -9,7 +9,7 @@ data class PlayerInGameDTO(
     val nick: String,
     @Json
     val tokens: Int,
-    @Json(name ="card_1")
+    @Json(name = "card_1")
     val card1: CardDto?,
     @Json(name = "card_2")
     val card2: CardDto?,
@@ -18,7 +18,7 @@ data class PlayerInGameDTO(
 
 )
 
-fun PlayerInGameDTO.toPlayerInGame(): PlayerInGame{
+fun PlayerInGameDTO.toPlayerInGame(): PlayerInGame {
     return PlayerInGame(
         nick = nick,
         tokens = tokens,

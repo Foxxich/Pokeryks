@@ -2,13 +2,12 @@ package com.poker.yks.data.game
 
 import android.util.Log
 import com.poker.yks.R
-import kotlin.math.log
 
 class PokerGame(
     val updateTable: UpdateTable,
     val myNick: String = "",
     var myTokens: Int,
-    var vip:Int
+    var vip: Int
 
 ) {
     var cardsOnTable = mutableListOf<Card>()
@@ -18,34 +17,34 @@ class PokerGame(
     var lastPlayerTokensPut = 0
     var tokensOnTable = 0
     var playerInMove = ""
-    var mePlaying : PlayerInGameDTO? = null
+    var mePlaying: PlayerInGameDTO? = null
     var isGameFinished = false
 
-init {
+    init {
 
-    val cardList = updateTable.cardsOnTable.map { it.toCard() }
-    cardsOnTable.clear()
-    cardsOnTable.addAll(cardList)
-    playersInGame.clear()
-    playersInGame.addAll(updateTable.playersInGame)
-    Log.w("players",playersInGame.toString())
-    tokensOnTable = updateTable.tokensOnTable
-    lastCall = updateTable.lastCall
-    mePlaying = playersInGame.find { it.nick == myNick }
-    isGameFinished = false
-    if (mePlaying!= null){
-        try {
-            winPercentage = mePlaying!!.winPercentage
+        val cardList = updateTable.cardsOnTable.map { it.toCard() }
+        cardsOnTable.clear()
+        cardsOnTable.addAll(cardList)
+        playersInGame.clear()
+        playersInGame.addAll(updateTable.playersInGame)
+        Log.w("players", playersInGame.toString())
+        tokensOnTable = updateTable.tokensOnTable
+        lastCall = updateTable.lastCall
+        mePlaying = playersInGame.find { it.nick == myNick }
+        isGameFinished = false
+        if (mePlaying != null) {
+            try {
+                winPercentage = mePlaying!!.winPercentage
+            } catch (e: Exception) {
+                winPercentage = 0f
+            }
+
+            playerInMove = updateTable.nextPlayer!!
+
         }
-        catch (e:Exception){
-            winPercentage = 0f
-        }
-
-        playerInMove = updateTable.nextPlayer!!
-
     }
-}
-    fun refreshTable(updateTable: UpdateTable){
+
+    fun refreshTable(updateTable: UpdateTable) {
         cardsOnTable.clear()
         cardsOnTable.addAll(updateTable.cardsOnTable.map { it.toCard() })
         playersInGame.clear()
@@ -54,21 +53,21 @@ init {
         lastCall = updateTable.lastCall
         mePlaying = playersInGame.find { it.nick == myNick }
         isGameFinished = updateTable.isFinished
-        if (mePlaying!= null){
+        if (mePlaying != null) {
             try {
                 winPercentage = mePlaying!!.winPercentage
-            }
-            catch (e:Exception){
+            } catch (e: Exception) {
                 winPercentage = 0f
             }
         }
         playerInMove = updateTable.nextPlayer!!
     }
 
-    fun isMyTurn():Boolean{
+    fun isMyTurn(): Boolean {
         return playerInMove == myNick
     }
-    fun getPlayerCards(nick:String, card:Int):Int?{
+
+    fun getPlayerCards(nick: String, card: Int): Int? {
 //        Log.i("raczysko0",nick.toString())
 //        Log.i("raczysko00",playersInGame.toString())
         try {
@@ -76,31 +75,31 @@ init {
 //            Log.i("raczysko1",playerDTO.toString())
             val player = playerDTO?.toPlayerInGame()
 //            Log.i("raczysko1",player.toString())
-            if (player?.nick != myNick && !isGameFinished){
+            if (player?.nick != myNick && !isGameFinished) {
                 return R.drawable.backcard
             }
-            return if (card == 0){
-                if (player!!.card1!= null) player.card1!!.image else R.drawable.backcard
-            } else{
-                if (player!!.card2!= null) player.card2!!.image else R.drawable.backcard
+            return if (card == 0) {
+                if (player!!.card1 != null) player.card1!!.image else R.drawable.backcard
+            } else {
+                if (player!!.card2 != null) player.card2!!.image else R.drawable.backcard
             }
 
-        }
-        catch (e: Exception){
-            Log.e("dupnik",e.toString())
+        } catch (e: Exception) {
+            Log.e("dupnik", e.toString())
             return null
         }
 
 
-
     }
-    fun getTableCard(id:Int):Int{
+
+    fun getTableCard(id: Int): Int {
         return try {
             cardsOnTable[id].image
-        } catch (e:Exception){
+        } catch (e: Exception) {
             R.drawable.backcard
         }
     }
+
     fun isMoveValid(move: Move): Boolean {
         if (!isMyTurn()) return false
 
