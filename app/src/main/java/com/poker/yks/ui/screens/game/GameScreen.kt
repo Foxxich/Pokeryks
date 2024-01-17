@@ -260,17 +260,16 @@ fun GameScreen(
                                 ) {
                                     (if (gameViewModel.pokerGame.playersInGame.size > 0) {
 
-                                        if (gameViewModel.pokerGame.playersInGame[0].nick == gameViewModel.pokerGame.myNick) {
-                                            gameViewModel.pokerGame.getPlayerCards(
-                                                gameViewModel.pokerGame.myNick,
-                                                0
-                                            )?.let {
-                                                painterResource(
-                                                    it
-                                                )
-                                            }
-                                        } else
-                                            painterResource(R.drawable.backcard)
+
+                                        gameViewModel.pokerGame.getPlayerCards(
+                                            gameViewModel.pokerGame.playersInGame[0].nick,
+                                            0
+                                        )?.let {
+                                            painterResource(
+                                                it
+                                            )
+                                        }
+
                                     } else {
                                         null
                                     })?.let {
@@ -284,17 +283,16 @@ fun GameScreen(
                                     }
                                     (if (gameViewModel.isPokerGameInitialized) {
 
-                                        if (gameViewModel.pokerGame.playersInGame[0].nick == gameViewModel.pokerGame.myNick) {
-                                            gameViewModel.pokerGame.getPlayerCards(
-                                                gameViewModel.pokerGame.myNick,
-                                                1
-                                            )?.let {
-                                                painterResource(
-                                                    it
-                                                )
-                                            }
-                                        } else
-                                            painterResource(R.drawable.backcard)
+
+                                        gameViewModel.pokerGame.getPlayerCards(
+                                            gameViewModel.pokerGame.playersInGame[0].nick,
+                                            1
+                                        )?.let {
+                                            painterResource(
+                                                it
+                                            )
+                                        }
+
                                     } else {
                                         null
                                     })?.let {
@@ -342,17 +340,16 @@ fun GameScreen(
                                 ) {
                                     (if (gameViewModel.isPokerGameInitialized) {
 
-                                        if (gameViewModel.pokerGame.playersInGame[1].nick == gameViewModel.pokerGame.myNick) {
-                                            gameViewModel.pokerGame.getPlayerCards(
-                                                gameViewModel.pokerGame.myNick,
-                                                0
-                                            )?.let {
-                                                painterResource(
-                                                    it
-                                                )
-                                            }
-                                        } else
-                                            painterResource(R.drawable.backcard)
+
+                                        gameViewModel.pokerGame.getPlayerCards(
+                                            gameViewModel.pokerGame.playersInGame[1].nick,
+                                            0
+                                        )?.let {
+                                            painterResource(
+                                                it
+                                            )
+                                        }
+
                                     } else {
                                         null
                                     })?.let {
@@ -369,17 +366,15 @@ fun GameScreen(
                                     }
                                     (if (gameViewModel.isPokerGameInitialized) {
 
-                                        if (gameViewModel.pokerGame.playersInGame[1].nick == gameViewModel.pokerGame.myNick) {
-                                            gameViewModel.pokerGame.getPlayerCards(
-                                                gameViewModel.pokerGame.myNick,
-                                                1
-                                            )?.let {
-                                                painterResource(
-                                                    it
-                                                )
-                                            }
-                                        } else
-                                            painterResource(R.drawable.backcard)
+                                        gameViewModel.pokerGame.getPlayerCards(
+                                            gameViewModel.pokerGame.playersInGame[1].nick,
+                                            1
+                                        )?.let {
+                                            painterResource(
+                                                it
+                                            )
+                                        }
+
                                     } else {
                                         null
                                     })?.let {
@@ -432,17 +427,16 @@ fun GameScreen(
                             ) {
                                 (if (gameViewModel.isPokerGameInitialized) {
 
-                                    if (gameViewModel.pokerGame.playersInGame[2].nick == gameViewModel.pokerGame.myNick) {
-                                        gameViewModel.pokerGame.getPlayerCards(
-                                            gameViewModel.pokerGame.myNick,
-                                            0
-                                        )?.let {
-                                            painterResource(
-                                                it
-                                            )
-                                        }
-                                    } else
-                                        painterResource(R.drawable.backcard)
+
+                                    gameViewModel.pokerGame.getPlayerCards(
+                                        gameViewModel.pokerGame.playersInGame[2].nick,
+                                        0
+                                    )?.let {
+                                        painterResource(
+                                            it
+                                        )
+                                    }
+
                                 } else {
                                     null
                                 })?.let {
@@ -459,17 +453,16 @@ fun GameScreen(
                                 }
                                 (if (gameViewModel.isPokerGameInitialized) {
 
-                                    if (gameViewModel.pokerGame.playersInGame[2].nick == gameViewModel.pokerGame.myNick) {
-                                        gameViewModel.pokerGame.getPlayerCards(
-                                            gameViewModel.pokerGame.myNick,
-                                            1
-                                        )?.let {
-                                            painterResource(
-                                                it
-                                            )
-                                        }
-                                    } else
-                                        painterResource(R.drawable.backcard)
+
+                                    gameViewModel.pokerGame.getPlayerCards(
+                                        gameViewModel.pokerGame.playersInGame[2].nick,
+                                        1
+                                    )?.let {
+                                        painterResource(
+                                            it
+                                        )
+                                    }
+
                                 } else {
                                     null
                                 })?.let {
@@ -519,17 +512,15 @@ fun GameScreen(
                             ) {
                                 (if (gameViewModel.isPokerGameInitialized) {
 
-                                    if (gameViewModel.pokerGame.playersInGame[3].nick == gameViewModel.pokerGame.myNick) {
-                                        gameViewModel.pokerGame.getPlayerCards(
-                                            gameViewModel.pokerGame.myNick,
-                                            0
-                                        )?.let {
-                                            painterResource(
-                                                it
-                                            )
-                                        }
-                                    } else
-                                        painterResource(R.drawable.backcard)
+
+                                    gameViewModel.pokerGame.getPlayerCards(
+                                        gameViewModel.pokerGame.playersInGame[3].nick,
+                                        0
+                                    )?.let {
+                                        painterResource(
+                                            it
+                                        )
+                                    }
                                 } else {
                                     null
                                 })?.let {
@@ -546,17 +537,16 @@ fun GameScreen(
                                 }
                                 (if (gameViewModel.isPokerGameInitialized) {
 
-                                    if (gameViewModel.pokerGame.playersInGame[3].nick == gameViewModel.pokerGame.myNick) {
-                                        gameViewModel.pokerGame.getPlayerCards(
-                                            gameViewModel.pokerGame.myNick,
-                                            1
-                                        )?.let {
-                                            painterResource(
-                                                it
-                                            )
-                                        }
-                                    } else
-                                        painterResource(R.drawable.backcard)
+
+                                    gameViewModel.pokerGame.getPlayerCards(
+                                        gameViewModel.pokerGame.playersInGame[3].nick,
+                                        1
+                                    )?.let {
+                                        painterResource(
+                                            it
+                                        )
+                                    }
+
                                 } else {
                                     null
                                 })?.let {
@@ -616,7 +606,7 @@ fun GameScreen(
                             }
                             val move = Move(
                                 moveType = "Call",
-                                amount = gameViewModel.pokerGame.lastCall,
+                                amount = 0,
                                 nick = gameViewModel.playerInfo.player_nick
                             )
                             val result = gameViewModel.move(move = move)
