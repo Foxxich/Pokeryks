@@ -9,35 +9,25 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.immutableListOf
 
 class ChooseServerViewModel : ViewModel() {
 
     private val serverStatusRepository = ServerStatusRepository()
-    private val _dummyServers = MutableStateFlow<Map<String, ServerStatusResponse>>(emptyMap())
+    private val _dummyServers = MutableStateFlow<List<ServerStatusResponse>>(emptyList())
     val dummyServers = _dummyServers.asStateFlow()
 
-    fun getDummyServerList() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val tempMap = mutableMapOf<String, ServerStatusResponse>()
+    init {
+        getDummyServerList()
+    }
 
-                SERVERS.forEach { serverUrl ->
-                    val response = serverStatusRepository.getServersStatus(serverUrl).body()
-                    response?.let { statusResponse ->
-                        tempMap[serverUrl] = statusResponse
-                    }
+    fun getDummyServerList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = serverStatusRepository.getServersStatus().body()
+            response?.let {
+                withContext(Dispatchers.Main) {
+                    _dummyServers.value = it
                 }
-                _dummyServers.value = tempMap.toMap()
             }
         }
     }
-
-
-    companion object {
-        var SERVERS = immutableListOf(
-            "http://10.0.2.2:8002/"
-        )
-    }
-
 }

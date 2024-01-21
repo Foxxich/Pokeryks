@@ -8,7 +8,7 @@ class SharedViewModel : ViewModel() {
     var nick: String = ""
     var money: Int = 0
     var vip: Int = 0
-
+    var serverIp: String = ""
 
     fun getPlayerInfo(): LoginResponse {
         return LoginResponse(nick, money, vip)

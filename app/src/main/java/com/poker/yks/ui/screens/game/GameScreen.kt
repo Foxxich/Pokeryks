@@ -63,16 +63,11 @@ fun GameScreen(
     var riskAmount by remember {
         mutableIntStateOf(0)
     }
-    Log.w("Should run Once", shouldRunOnce.toString())
     if (shouldRunOnce) {
-        gameViewModel.createWebSocketConnection("ws://192.168.0.108:8000/ws/socket-server")
+        gameViewModel.createWebSocketConnection("ws://10.0.2.2:${sharedViewModel.serverIp}/ws/socket-server")
         shouldRunOnce = false
     }
     val updating = gameViewModel.nextPlayer.collectAsState()
-//    gameViewModel.createWebSocketConnection("ws://10.0.2.2:8000/ws/socket-server")
-
-//    gameViewModel.createWebSocketConnection("wss://ws.postman-echo.com/raw")
-//    gameViewModel.createWebSocketConnection("wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self")
     Box(modifier = Modifier.fillMaxSize()) {
 
         Image(
@@ -204,13 +199,19 @@ fun GameScreen(
                                 Text(text = updating.value, fontSize = 12.sp)
                                 Text(
                                     text = if (gameViewModel.isPokerGameInitialized) {
-                                        "last Call: ${gameViewModel.pokerGame.lastCall}"
+                                        "Last Call: ${gameViewModel.pokerGame.lastCall}"
                                     } else "",
                                     fontSize = 12.sp
                                 )
                                 Text(
                                     text = if (gameViewModel.isPokerGameInitialized) {
                                         "Total tokens: ${gameViewModel.pokerGame.tokensOnTable}"
+                                    } else "",
+                                    fontSize = 12.sp
+                                )
+                                Text(
+                                    text = if (gameViewModel.isPokerGameInitialized) {
+                                        "Total wins: ${gameViewModel.pokerGame.winPercentage}%"
                                     } else "",
                                     fontSize = 12.sp
                                 )
@@ -467,12 +468,7 @@ fun GameScreen(
                                     null
                                 })?.let {
                                     Image(
-                                        //                                painter = painterResource(R.drawable.backcard),
-                                        painter =
-
-                                        it,
-
-
+                                        painter = it,
                                         contentDescription = null,
                                         modifier = Modifier.size(30.dp, 75.dp)
                                     )
@@ -486,10 +482,8 @@ fun GameScreen(
                 Box(
                     modifier = Modifier
                         .width(120.dp)
-//                        .height(120.dp)
                         .background(Color.Yellow)
                         .align(Alignment.CenterEnd)
-
                         .clip(RoundedCornerShape(10.dp))
                 ) {
                     //nick money card card
@@ -525,12 +519,7 @@ fun GameScreen(
                                     null
                                 })?.let {
                                     Image(
-                                        //                                painter = painterResource(R.drawable.backcard),
-                                        painter =
-
-                                        it,
-
-
+                                        painter = it,
                                         contentDescription = null,
                                         modifier = Modifier.size(30.dp, 75.dp)
                                     )
@@ -551,7 +540,6 @@ fun GameScreen(
                                     null
                                 })?.let {
                                     Image(
-                                        //                                painter = painterResource(R.drawable.backcard),
                                         painter = it,
                                         contentDescription = null,
                                         modifier = Modifier.size(30.dp, 75.dp)
@@ -562,8 +550,6 @@ fun GameScreen(
                     }
                 }
             }
-
-
 
             Box(
                 modifier = Modifier
@@ -576,6 +562,17 @@ fun GameScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    Button(
+                        onClick = {
+                            gameViewModel.exitGame()
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier.padding(16.dp), // Dark wood color for the table
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D4C41))
+                    ) {
+                        Text(text = "Go to Menu")
+                    }
                     Button(
                         onClick = {
                             if (!gameViewModel.isMyTurn()) {

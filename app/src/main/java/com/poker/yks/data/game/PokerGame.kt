@@ -21,24 +21,22 @@ class PokerGame(
     var isGameFinished = false
 
     init {
-
         val cardList = updateTable.cardsOnTable.map { it.toCard() }
         cardsOnTable.clear()
         cardsOnTable.addAll(cardList)
         playersInGame.clear()
         playersInGame.addAll(updateTable.playersInGame)
-        Log.w("players", playersInGame.toString())
         tokensOnTable = updateTable.tokensOnTable
         lastCall = updateTable.lastCall
         mePlaying = playersInGame.find { it.nick == myNick }
         isGameFinished = false
         if (mePlaying != null) {
-            try {
+            if (mePlaying!!.winPercentage != null) {
                 winPercentage = mePlaying!!.winPercentage
-            } catch (e: Exception) {
+            } else {
+                mePlaying!!.winPercentage = 0f
                 winPercentage = 0f
             }
-
             playerInMove = updateTable.nextPlayer!!
 
         }
@@ -54,10 +52,10 @@ class PokerGame(
         mePlaying = playersInGame.find { it.nick == myNick }
         isGameFinished = updateTable.isFinished
         if (mePlaying != null) {
-            try {
-                winPercentage = mePlaying!!.winPercentage
+            winPercentage = try {
+                mePlaying!!.winPercentage
             } catch (e: Exception) {
-                winPercentage = 0f
+                0f
             }
         }
         playerInMove = updateTable.nextPlayer!!

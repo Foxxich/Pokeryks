@@ -14,7 +14,7 @@ data class PlayerInGameDTO(
     @Json(name = "card_2")
     val card2: CardDto?,
     @Json
-    val winPercentage: Float?
+    var winPercentage: Float?
 
 )
 

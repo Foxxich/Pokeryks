@@ -39,8 +39,8 @@ import com.poker.yks.ui.screens.SharedViewModel
 fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedViewModel) {
 
     val chooseServerViewModel: ChooseServerViewModel = viewModel()
-    val dummyServers = chooseServerViewModel.dummyServers.collectAsState()
     chooseServerViewModel.getDummyServerList()
+    val dummyServers = chooseServerViewModel.dummyServers.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
 
@@ -78,14 +78,15 @@ fun ChooseServerScreen(navController: NavController, sharedViewModel: SharedView
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    itemsIndexed(items = dummyServers.value.values.toList()) { _, server ->
+                    itemsIndexed(items = dummyServers.value) { _, server ->
                         Row(modifier = Modifier
                             .padding(5.dp)
                             .border(width = 2.dp, color = Color.Black)
                             .fillMaxWidth()
                             .height(40.dp)
                             .clickable {
-                                //TODO: manage in appropriate way
+                                sharedViewModel.serverIp = server.ip
+                                navController.navigate(Screen.GameScreen.route)
                             }
                             .let {
                                 if (server.occupation == 0) {

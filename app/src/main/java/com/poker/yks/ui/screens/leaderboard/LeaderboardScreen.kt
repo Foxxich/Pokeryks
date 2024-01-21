@@ -92,7 +92,7 @@ fun LeaderboardScreen(navController: NavController) {
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold
                             )
-                            Text(text = "Player ${player.player}", color = Color.White)
+                            Text(text = "Player ${player.username}", color = Color.White)
                             Text(text = "${player.win_number} wins", color = Color.White)
                         }
                     }
